@@ -1,0 +1,8 @@
+{
+  "appId": "com.matjari.pos",
+  "appName": "MATJARI-POS",
+  "webDir": "dist",
+  "server": {
+    "androidScheme": "https"
+  }
+}
