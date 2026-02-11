@@ -1,20 +1,206 @@
+# 📄 **ملف `README.md` – نسخة احترافية لمشروع متجري (MATJARI)**
+
+بناءً على محتوى صفحة GitHub الخاصة بك، إليك نسخة كاملة ومتكاملة من ملف `README.md` تعكس هوية المشروع وإنجازاتك في التحزيم والتطوير. يمكنك نسخها مباشرة إلى مستودعك.
+
+
 <div align="center">
-<img width="1200" height="475" alt="GHBanner" src="https://github.com/user-attachments/assets/0aa67016-6eaf-458a-adb2-6e31a0763ed6" />
+  <img src="public/icon.png" alt="MATJARI Logo" width="128" height="128">
+  <h1>🇸🇦 متجري (MATJARI)</h1>
+  <h3>نظام نقاط بيع (POS) ذكي، مفتوح المصدر، للعالم العربي</h3>
+  <p>
+    <strong>بالعربية:</strong> متكامل • سريع • مجاني • يدعم العربية والإنجليزية والفرنسية
+  </p>
+  <p>
+    <strong>English:</strong> Integrated • Fast • Free • Arabic/English/French support
+  </p>
+  <p>
+    <strong>Français:</strong> Intégré • Rapide • Gratuit • Support Arabe/Anglais/Français
+  </p>
+  <br>
+  
+  [![GitHub release](https://img.shields.io/github/v/release/SalehGNUTUX/matjari?include_prereleases&style=for-the-badge)](https://github.com/SalehGNUTUX/matjari/releases)
+  [![License: GPL v3](https://img.shields.io/badge/License-GPLv3-blue.svg?style=for-the-badge)](https://www.gnu.org/licenses/gpl-3.0)
+  [![Platform](https://img.shields.io/badge/Platform-Windows%20%7C%20Linux%20%7C%20Android-blue?style=for-the-badge)](https://github.com/SalehGNUTUX/matjari/releases)
+  ![TypeScript](https://img.shields.io/badge/TypeScript-92%25-blue?style=for-the-badge)
 </div>
 
-# Run and deploy your AI Studio app
+---
 
-This contains everything you need to run your app locally.
+## ✨ **عن المشروع**
 
-View your app in AI Studio: https://ai.studio/apps/drive/1-92q086BXwtohKB1v_xmWo_uNQ2P2h_L
+**متجري (MATJARI)** هو نظام إدارة نقاط بيع (POS) متكامل، ذكي، ومفتوح المصدر، **مصمم خصيصاً** لتلبية احتياجات المتاجر الصغيرة والمتوسطة في **العالم العربي**.
 
-## Run Locally
+تم بناء المشروع من الصفر بهدف تقديم بديل مجاني وقوي للبرامج التجارية المغلقة، مع التركيز على:
+- ✅ **سهولة الاستخدام** وواجهة عربية مبسطة.
+- ✅ **السرعة** والأداء العالي حتى على الأجهزة القديمة.
+- ✅ **دعم كامل** لطباعة الفواتير والماسح الضوئي.
+- ✅ **نظام ولاء** ونقاط للزبائن.
+- ✅ **تقارير وإحصائيات** متقدمة.
 
-**Prerequisites:**  Node.js
+---
 
+## 🚀 **المميزات الرئيسية**
 
-1. Install dependencies:
-   `npm install`
-2. Set the `GEMINI_API_KEY` in [.env.local](.env.local) to your Gemini API key
-3. Run the app:
-   `npm run dev`
+| الميزة | الوصف |
+|--------|-------|
+| **🖥️ واجهة عربية** | واجهة مستخدم كاملة بالعربية (ودعم EN/FR) |
+| **📦 إدارة المخزون** | إضافة، تعديل، حذف، بحث، وتنبيهات النفاد |
+| **👥 إدارة الزبائن** | نظام نقاط وفاء، قسائم شراء، وتاريخ المشتريات |
+| **📊 تقارير تفاعلية** | رسوم بيانية، إيرادات، أفضل المنتجات، أداء الموظفين |
+| **🖨️ طباعة فواتير** | دعم طابعات الحرارة و A4، وحفظ الفواتير |
+| **📱 متعدد المنصات** | يعمل على Windows, Linux (AppImage), و Android |
+| **🔍 بحث شامل** | بحث ذكي بالاسم، الباركود، رقم الفاتورة، أو الهاتف |
+| **🔐 آمن** | صلاحيات مدير/بائع، أقفال حذف، وتأكيد بكلمة مرور |
+
+---
+
+## 📸 **لقطات شاشة**
+> *(يُفضل إضافة صور حقيقية للبرنامج هنا)*
+
+<div align="center">
+  <img src="screenshots/dashboard.png" alt="لوحة التحكم" width="400">
+  <img src="screenshots/pos.png" alt="نقطة البيع" width="400">
+  <br>
+  <img src="screenshots/inventory.png" alt="المخزون" width="400">
+  <img src="screenshots/reports.png" alt="التقارير" width="400">
+</div>
+
+---
+
+## ⚙️ **التقنيات المستخدمة**
+
+- **Electron** – للتطبيقات المكتبية (Windows/Linux)
+- **React** + **TypeScript** – للواجهة الأمامية
+- **Vite** – للبناء السريع
+- **Capacitor** – لتطبيق Android
+- **Recharts** – للرسوم البيانية
+- **Framer Motion** – للحركات والانتقالات
+- **i18next** – للترجمة (AR, EN, FR)
+
+---
+
+## 📦 **التحميل والتنزيل**
+
+### 🪟 **Windows**
+| النسخة | التحميل |
+|--------|---------|
+| مثبت (Installer) | [MATJARI-POS-1.0.0-setup.exe](https://github.com/SalehGNUTUX/matjari/releases/latest) |
+| محمول (Portable) | [MATJARI-POS-1.0.0-portable.exe](https://github.com/SalehGNUTUX/matjari/releases/latest) |
+
+### 🐧 **Linux**
+| النسخة | التحميل |
+|--------|---------|
+| AppImage | [MATJARI-POS-1.0.0.AppImage](https://github.com/SalehGNUTUX/matjari/releases/latest) |
+| حزمة Deb | [matjari-pos-1.0.0.deb](https://github.com/SalehGNUTUX/matjari/releases/latest) |
+
+### 📱 **Android**
+| النسخة | التحميل |
+|--------|---------|
+| APK | [MATJARI-POS-1.0.0.apk](https://github.com/SalehGNUTUX/matjari/releases/latest) *(قريباً)* |
+
+---
+
+## 🚀 **التشغيل السريع (للمطورين)**
+
+### المتطلبات الأساسية
+- Node.js 18+ و npm
+
+```bash
+# 1. استنساخ المستودع
+git clone https://github.com/SalehGNUTUX/matjari.git
+cd matjari
+
+# 2. تثبيت الاعتماديات
+npm install
+
+# 3. تشغيل بيئة التطوير
+npm run dev
+
+# 4. تشغيل تطبيق Electron
+npm run electron:start
+```
+
+---
+
+## 🛠️ **بناء الحزم (للمطورين)**
+
+| الأمر | الناتج |
+|-------|--------|
+| `npm run package:appimage` | Linux AppImage |
+| `npm run package:win-portable` | Windows Portable |
+| `npm run electron:build:win` | Windows Installer (NSIS) |
+| `npm run apk:build` | فتح Android Studio لبناء APK |
+
+---
+
+## 📁 **هيكل المشروع**
+
+```
+matjari/
+├── public/           # الأيقونات والملفات الثابتة
+├── src/              # كود React و TypeScript
+├── dist/             # مخرج Vite (يتولد تلقائياً)
+├── dist_electron/    # مخرج electron-builder
+├── main.js           # مدخل Electron
+├── preload.js        # preload script للأمان
+├── package.json      # التبعيات والأوامر
+├── vite.config.ts    # إعدادات Vite
+└── i18n.ts           # ملف الترجمة (عربي/إنجليزي/فرنسي)
+```
+
+---
+
+## 🌍 **الترجمة والدعم**
+
+المشروع يدعم **3 لغات** بالكامل:
+- 🇸🇦 **العربية** (افتراضي)
+- 🇬🇧 **الإنجليزية**
+- 🇫🇷 **الفرنسية**
+
+يتم اكتشاف لغة النظام تلقائياً، ويمكن تغييرها من الإعدادات.
+
+---
+
+## 🤝 **المساهمة**
+
+نرحب بمساهماتكم! 🎉
+
+1. Fork المشروع
+2. أنشئ فرعاً للميزة (`git checkout -b feature/amazing-feature`)
+3. Commit التغييرات (`git commit -m 'Add amazing feature'`)
+4. Push إلى الفرع (`git push origin feature/amazing-feature`)
+5. افتح Pull Request
+
+**ملاحظات للمساهمة:**
+- تأكد من صحة ملف `i18n.ts` قبل البناء (لا تكرار).
+- اختبر التغييرات على Windows و Linux.
+- اكتب كوداً نظيفاً بـ TypeScript.
+
+---
+
+## 📄 **الترخيص**
+
+هذا المشروع مرخص تحت **GNU General Public License v3.0**.  
+للمزيد، راجع ملف [LICENSE](LICENSE).
+
+---
+
+## 💖 **الدعم والتواصل**
+
+- **GitHub:** [SalehGNUTUX/matjari](https://github.com/SalehGNUTUX/matjari)
+- **البريد الإلكتروني:** saleh@gnutux.com
+- **تقرير مشكلة:** [افتح Issue](https://github.com/SalehGNUTUX/matjari/issues)
+
+> ❤️ **مشروع متجري** هو مشروع مفتوح المصدر مبني بشغف لتجار العالم العربي.  
+> إذا أعجبك المشروع، لا تنسَ **⭐ نجمة** على GitHub!
+
+---
+
+<div align="center">
+  <strong>بُني بأمانة ❤️ في العالم العربي</strong>
+  <br>
+  <sub>© 2026 متجري (MATJARI) - كل الحقوق محفوظة بموجب رخصة GPLv3</sub>
+</div>
+```
+
+---
