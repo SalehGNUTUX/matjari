@@ -1,18 +1,30 @@
 # متجري | MATJARI POS
-### نظام إدارة المبيعات الذكي — v2.0.0
+### نظام إدارة المبيعات الذكي — v2.9.0 Beta
 
-<div dir="rtl">
+[![License: GPL v3](https://img.shields.io/badge/License-GPLv3-blue.svg)](https://github.com/SalehGNUTUX/matjari/blob/main/LICENSE)
+[![Release](https://img.shields.io/badge/Release-v2.9.0--beta-green)](https://github.com/SalehGNUTUX/matjari/releases/tag/Matjari-2.9.0)
+
+---
+
+## ⬇️ التحميل المباشر
+
+| المنصة | الملف | الحجم |
+|--------|-------|-------|
+| 📱 **Android APK** | [Matjari-2.9.0-beta.apk](https://github.com/SalehGNUTUX/matjari/releases/download/Matjari-2.9.0/Matjari-2.9.0-beta.apk) | 7.5 MB |
+| 🐧 **Linux AppImage (x86_64)** | [Matjari-2.9.0-beta-x86_64.AppImage](https://github.com/SalehGNUTUX/matjari/releases/download/Matjari-2.9.0/Matjari-2.9.0-beta-x86_64.AppImage) | 109.6 MB |
+
+> 📦 [جميع ملفات الإصدار](https://github.com/SalehGNUTUX/matjari/releases/tag/Matjari-2.9.0)
 
 ---
 
 ## 📋 نظرة عامة
 
 **متجري** نظام نقطة بيع (POS) مفتوح المصدر، مبني بـ React + TypeScript، يعمل على:
-- 🖥️ **سطح المكتب** (Linux AppImage / Windows .exe)
-- 📱 **Android** (APK عبر Capacitor)
-- 🌐 **المتصفح / PWA** (GitHub Pages)
+- 🖥️ **سطح المكتب** — Linux AppImage
+- 📱 **Android** — APK
+- 🌐 **المتصفح / PWA** — بدون تثبيت
 
-البيانات تُحفظ محلياً في المتصفح (localStorage) — لا سحابة، لا إنترنت مطلوب للعمل.
+البيانات تُحفظ محلياً — **لا سحابة، لا إنترنت مطلوب للعمل**.
 
 ---
 
@@ -20,164 +32,86 @@
 
 | القسم | الوصف |
 |-------|-------|
-| **نقطة البيع** | مسح باركود، سلة مبيعات، خصومات، طباعة فاتورة QR |
-| **المخزون** | إضافة/تعديل/حذف منتجات، جلب معلومات عبر الباركود |
-| **الزبائن** | نقاط الولاء، سجل المشتريات، القسائم |
-| **الموردون** | إدارة الموردين وربطهم بالمنتجات |
-| **الديون** | تتبع ديون الزبائن، دفعات جزئية، تنبيهات التأخر |
-| **الزكاة** | حاسبة زكاة المال حسب المذاهب الأربعة |
-| **لوحة التحكم** | إحصائيات المبيعات، الرسوم البيانية، تقارير |
-| **البحث الشامل** | البحث في المبيعات، مسح QR للفواتير، معالجة المرتجعات |
-| **الإعدادات** | إدارة الموظفين، الصلاحيات، الطابعة، اللغة |
+| 🛒 **نقطة البيع** | مسح باركود، سلة مبيعات، خصومات، طباعة فاتورة + QR |
+| 📦 **المخزون** | إضافة/تعديل منتجات، جلب معلومات تلقائي عبر الباركود |
+| 👥 **الزبائن** | نقاط الولاء، سجل المشتريات، القسائم |
+| 🚚 **الموردون** | إدارة الموردين وربطهم بالمنتجات |
+| 💳 **الديون** | تتبع ديون الزبائن، دفعات جزئية، تنبيهات التأخر |
+| ⭐ **الزكاة** | حاسبة زكاة المال حسب المذاهب الأربعة |
+| 📊 **لوحة التحكم** | إحصائيات المبيعات، رسوم بيانية، تقارير |
+| 🔍 **البحث الشامل** | البحث في المبيعات، مسح QR، معالجة المرتجعات |
+| ⚙️ **الإعدادات** | موظفون، صلاحيات، طابعة حرارية، لغة |
 
-**اللغات المدعومة:** العربية 🇲🇦 · English · Français
-
----
-
-## 🚀 البناء والتشغيل
-
-### المتطلبات
-- Node.js ≥ 18
-- npm ≥ 9
-
-### تثبيت الاعتماديات
-```bash
-npm install
-```
-
-### وضع التطوير
-```bash
-npm run dev
-# http://localhost:5173
-```
-
-### بناء نسخة الويب
-```bash
-npm run build:web
-```
-
----
-
-## 🖥️ بناء نسخة سطح المكتب (Linux AppImage)
-
-```bash
-npm run build:web
-npm run package:linux
-# المخرج: dist_electron/*.AppImage
-```
-
----
-
-## 📱 بناء نسخة Android (APK)
-
-```bash
-# المرة الأولى فقط
-npx cap add android
-
-# توليد الأيقونات
-node scripts/generate-android-icons.js
-
-# البناء
-npm run build:web
-npx cap sync android
-cd android && ./gradlew assembleDebug
-# المخرج: android/app/build/outputs/apk/debug/app-debug.apk
-```
-
----
-
-## 🌐 نشر نسخة الويب (GitHub Pages)
-
-```bash
-./deploy-github-pages.sh MatjariPOS
-# أو مع GitHub Actions: ضع .github/workflows/deploy.yml
-```
-
----
-
-## 🏗️ هيكل المشروع
-
-```
-Matjari/
-├── components/          # مكونات React (POS، Inventory، Customers...)
-├── src/
-│   └── capacitor-bridge.ts   # جسر الطباعة/الكاميرا متعدد المنصات
-├── scripts/
-│   └── generate-android-icons.js
-├── android/             # مشروع Android (Capacitor)
-├── public/              # الخطوط، الأيقونة، PWA
-├── main.js              # عملية Electron الرئيسية
-├── preload.js           # Electron preload
-├── i18n.ts              # ترجمات AR / EN / FR (443 مفتاح)
-├── types.ts             # تعريفات TypeScript
-└── App.tsx              # نقطة الدخول الرئيسية
-```
-
----
-
-## ⚠️ حالة التطوير — v2.0.0
-
-هذا الإصدار **تحت التطوير النشط**. الميزات الأساسية تعمل بشكل مستقر، لكن المشاكل التالية لا تزال قيد الحل:
-
-### 🔴 مشاكل معروفة
-
-#### على الهاتف (Android APK)
-| المشكلة | الحالة |
-|---------|--------|
-| **صلاحيات الكاميرا والتخزين** لا تظهر في إعدادات النظام | قيد الحل — الملفات الصحيحة موجودة، تحتاج إعادة بناء APK بعد `npx cap add android` من جديد |
-| **طباعة الفاتورة** لا تعرض تطبيقات الطابعة المثبتة على الهاتف | قيد الحل — يعمل عبر Share Sheet حالياً (يمكن إرسال الفاتورة بدلاً من طباعتها مباشرة) |
-
-#### على سطح المكتب (AppImage)
-| المشكلة | الحالة |
-|---------|--------|
-| انهيار البرنامج عند الطباعة على بعض توزيعات Linux | مُصلَح في v2.0 — يستخدم الآن المتصفح الافتراضي للنظام عبر `xdg-open` |
-
-### ✅ يعمل بشكل مستقر
-- جميع عمليات البيع والمخزون والزبائن والموردين
-- الديون والزكاة
-- تصدير واستيراد البيانات (JSON)
-- لوحة التحكم والتقارير
-- حفظ الفاتورة كصورة PNG
-- الطباعة على سطح المكتب (Linux / Windows)
-- المزامنة بين الأجهزة عبر تصدير/استيراد البيانات
+**اللغات:** العربية 🇲🇦 · English · Français
 
 ---
 
 ## 🔑 بيانات الدخول الافتراضية
 
 ```
-المستخدم: admin
-كلمة المرور: admin
+المستخدم : admin
+كلمة المرور : admin
 ```
-> غيِّر كلمة المرور من الإعدادات → إدارة الطاقم فور تثبيت البرنامج.
+> ⚠️ غيِّر كلمة المرور فور التثبيت من **الإعدادات ← إدارة الطاقم**.
 
 ---
 
-## 🛠️ التقنيات المستخدمة
+## 📲 تثبيت Android APK
 
-| التقنية | الدور |
-|---------|-------|
-| React 18 + TypeScript | واجهة المستخدم |
-| Vite 5 | أداة البناء |
-| Tailwind CSS | التصميم |
-| Electron 28 | نسخة سطح المكتب |
-| Capacitor 6 | نسخة Android |
-| Recharts | الرسوم البيانية |
-| html5-qrcode | مسح الباركود |
-| QRCode.react | توليد QR |
-| html2canvas | تصدير الفاتورة صورة |
+1. حمِّل ملف `Matjari-2.9.0-beta.apk`
+2. فعِّل **"تثبيت من مصادر غير معروفة"** في إعدادات الهاتف
+3. افتح الملف وثبِّته
+
+---
+
+## 🐧 تشغيل Linux AppImage
+
+```bash
+chmod +x Matjari-2.9.0-beta-x86_64.AppImage
+./Matjari-2.9.0-beta-x86_64.AppImage
+```
+
+---
+
+## ⚠️ حالة الإصدار التجريبي
+
+الميزات الأساسية تعمل بشكل مستقر. المشاكل التالية قيد الحل:
+
+| المشكلة | المنصة | الحالة |
+|---------|--------|--------|
+| صلاحيات الكاميرا والتخزين في إعدادات النظام | Android | 🔧 قيد الحل |
+| الطباعة المباشرة لتطبيقات الطابعة | Android | 🔧 قيد الحل — يعمل عبر المشاركة حالياً |
+| انهيار البرنامج عند الطباعة | Linux AppImage | ✅ مُصلَح |
+
+---
+
+## 🛠️ البناء من المصدر
+
+```bash
+npm install
+npm run dev                    # وضع التطوير
+
+# AppImage
+npm run build:web && npm run package:linux
+
+# APK
+node scripts/generate-android-icons.js
+npm run build:web && npx cap sync android
+cd android && ./gradlew assembleDebug
+```
+
+---
+
+## 🏗️ التقنيات
+
+`React 18` · `TypeScript` · `Vite 5` · `Tailwind CSS` · `Electron 28` · `Capacitor 6` · `Recharts` · `html5-qrcode`
 
 ---
 
 ## 📄 الترخيص
 
-MIT License — مفتوح المصدر للاستخدام الشخصي والتجاري.
+[GNU General Public License v3.0](https://github.com/SalehGNUTUX/matjari/blob/main/LICENSE)
 
 ---
 
-## 👨‍💻 التطوير
-
-صُنع بـ ❤️ بواسطة **SalehGNUTUX**
-[GitHub](https://github.com/SalehGNUTUX)
-
-</div>
+صُنع بـ ❤️ بواسطة **[@SalehGNUTUX](https://github.com/SalehGNUTUX)**
