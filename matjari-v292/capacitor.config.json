@@ -1,0 +1,14 @@
+{
+  "appId": "com.matjari.pos",
+  "appName": "Matjari",
+  "webDir": "dist",
+  "server": {
+    "androidScheme": "https"
+  },
+  "plugins": {
+    "SplashScreen": {
+      "launchShowDuration": 1500,
+      "backgroundColor": "#0a0f1a"
+    }
+  }
+}
