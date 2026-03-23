@@ -1,0 +1,726 @@
+import React, { useState, useEffect, useRef, useMemo } from 'react';
+import {
+  Package, Plus, Trash2, Edit2, Lock, ImageIcon,
+  Loader2, Globe, X, Sparkles, AlertTriangle,
+  Eye, Terminal, CheckSquare, Square, Search, CheckCircle2, AlertCircle,
+  RefreshCcw, Camera
+} from 'lucide-react';
+import { BarcodeScanner } from './BarcodeScanner';
+import { Html5QrcodeScanner } from 'html5-qrcode';
+import { Product, Supplier, AppSettings, User } from '../types';
+
+interface InventoryProps {
+  products: Product[];
+  setProducts: React.Dispatch<React.SetStateAction<Product[]>>;
+  suppliers: Supplier[];
+  settings: AppSettings;
+  currentUser: User;
+  t?: any;
+}
+
+interface DataProvider {
+  id: string;
+  name: string;
+  url: string;
+}
+
+const compressImage = (dataUrl: string, maxSize = 400, quality = 0.7): Promise<string> =>
+  new Promise(resolve => {
+    const img = new Image();
+    img.onload = () => {
+      const canvas = document.createElement('canvas');
+      const ratio = Math.min(maxSize / img.width, maxSize / img.height, 1);
+      canvas.width = Math.round(img.width * ratio);
+      canvas.height = Math.round(img.height * ratio);
+      canvas.getContext('2d')!.drawImage(img, 0, 0, canvas.width, canvas.height);
+      resolve(canvas.toDataURL('image/jpeg', quality));
+    };
+    img.onerror = () => resolve(dataUrl);
+    img.src = dataUrl;
+  });
+
+export const Inventory: React.FC<InventoryProps> = ({
+  products,
+  setProducts,
+  suppliers,
+  settings,
+  currentUser,
+  t = {}
+}) => {
+  // --- الحالات (States) ---
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isScannerOpen, setIsScannerOpen] = useState(false);
+  const [editingProduct, setEditingProduct] = useState<Product | null>(null);
+  const [isConfirmingDelete, setIsConfirmingDelete] = useState<{ids: string[], isBulk: boolean} | null>(null);
+  const [deletePass, setDeletePass] = useState('');
+  const [selectedIds, setSelectedIds] = useState<string[]>([]);
+  const [searchQuery, setSearchQuery] = useState('');
+  const [activeCategory, setActiveCategory] = useState(t.all || 'الكل');
+  const [formData, setFormData] = useState<Partial<Product>>({
+    category: t.general || 'عام',
+    minStock: 5,
+    cost: 0,
+    price: 0,
+    stock: 0,
+    supplierId: ''
+  });
+
+  const [fetchStatus, setFetchStatus] = useState<'idle' | 'searching' | 'success' | 'notfound' | 'error'>('idle');
+
+  const [providers] = useState<DataProvider[]>([
+    { id: 'goupc', name: 'Go-UPC (عام/عربي)', url: 'https://go-upc.com/search?q={code}' },
+                                               { id: 'off', name: 'Open Food Facts (مواد غذائية)', url: 'https://world.openfoodfacts.org/api/v2/product/{code}.json' },
+                                               { id: 'obf', name: 'Open Beauty Facts (تجميل)', url: 'https://world.openbeautyfacts.org/api/v2/product/{code}.json' },
+                                               { id: 'opf', name: 'Open Products Facts (منتجات عامة)', url: 'https://world.openproductsfacts.org/api/v2/product/{code}.json' },
+                                               { id: 'opff', name: 'Open Pet Food Facts (حيوانات)', url: 'https://world.openpetfoodfacts.org/api/v2/product/{code}.json' },
+                                               { id: 'google', name: 'Google Shopping (البحث الشامل)', url: 'https://www.google.com/search?q={code}&tbm=shop' }
+  ]);
+  const [selectedProvider, setSelectedProvider] = useState(providers[0].url);
+  const [isFetching, setIsFetching] = useState(false);
+  const [rawJson, setRawJson] = useState<any>(null);
+  const [showRawData, setShowRawData] = useState(false);
+
+  const [undoDelete, setUndoDelete] = useState<{ items: Product[], timeLeft: number } | null>(null);
+  const undoTimerRef = useRef<NodeJS.Timeout | null>(null);
+  const fileInputRef = useRef<HTMLInputElement>(null);
+
+  // --- ميزة كاميرا الماسح الضوئي الذكية ---
+  useEffect(() => {
+    let scanner: any = null;
+    if (isScannerOpen) {
+      setTimeout(() => {
+        scanner = new Html5QrcodeScanner("inventory-camera-reader", {
+          fps: 10,
+          qrbox: { width: 250, height: 250 },
+          rememberLastUsedCamera: true
+        }, false);
+
+        scanner.render((decodedText: string) => {
+          setFormData(prev => ({ ...prev, barcode: decodedText }));
+          setIsScannerOpen(false);
+          scanner.clear();
+          handleOnlineLookup(decodedText);
+        }, () => {});
+      }, 300);
+    }
+    return () => { if (scanner) scanner.clear().catch(() => {}); };
+  }, [isScannerOpen]);
+
+  useEffect(() => {
+    if (undoDelete && undoDelete.timeLeft > 0) {
+      undoTimerRef.current = setTimeout(() => {
+        setUndoDelete(prev => prev ? { ...prev, timeLeft: prev.timeLeft - 1 } : null);
+      }, 1000);
+    } else if (undoDelete && undoDelete.timeLeft === 0) {
+      setUndoDelete(null);
+    }
+    return () => { if(undoTimerRef.current) clearTimeout(undoTimerRef.current); };
+  }, [undoDelete]);
+
+  useEffect(() => {
+    let barcodeBuffer = '';
+    let lastKeyTime = Date.now();
+
+    const handleKeyPress = (e: KeyboardEvent) => {
+      const target = e.target as HTMLElement;
+      if (target.tagName === 'INPUT' && !isModalOpen) return;
+
+      const currentTime = Date.now();
+      if (currentTime - lastKeyTime > 100) barcodeBuffer = '';
+
+  if (e.key === 'Enter') {
+    if (barcodeBuffer.length > 3) {
+      if (isModalOpen) {
+        setFormData(prev => ({ ...prev, barcode: barcodeBuffer }));
+        handleOnlineLookup(barcodeBuffer);
+      } else {
+        setSearchQuery(barcodeBuffer);
+      }
+      barcodeBuffer = '';
+    }
+  } else if (e.key.length === 1) {
+    barcodeBuffer += e.key;
+  }
+  lastKeyTime = currentTime;
+    };
+
+    window.addEventListener('keypress', handleKeyPress);
+    return () => window.removeEventListener('keypress', handleKeyPress);
+  }, [isModalOpen]);
+
+  const deepSearch = (obj: any, keys: string[]): string => {
+    if (!obj || typeof obj !== 'object') return "";
+    for (const key of keys) {
+      if (obj[key] && typeof obj[key] === 'string' && obj[key].length > 2) return obj[key];
+    }
+    for (const k in obj) {
+      if (typeof obj[k] === 'object') {
+        const res = deepSearch(obj[k], keys);
+        if (res) return res;
+      }
+    }
+    return "";
+  };
+
+  const handleOnlineLookup = async (forcedBarcode?: string) => {
+    const codeToSearch = forcedBarcode || formData.barcode;
+    if (!codeToSearch) return;
+
+    setIsFetching(true);
+    setFetchStatus('searching');
+    setRawJson(null);
+
+    let foundName = "";
+    let foundImage = "";
+    let successfulProviderUrl = "";
+
+    const searchSequence = [
+      selectedProvider,
+      ...providers.map(p => p.url).filter(url => url !== selectedProvider)
+    ];
+
+    for (const baseUrl of searchSequence) {
+      if (foundName) break;
+      const apiUrl = baseUrl.replace('{code}', codeToSearch);
+      const proxyUrl = `https://api.allorigins.win/get?url=${encodeURIComponent(apiUrl)}`;
+
+      try {
+        const response = await fetch(proxyUrl);
+        if (!response.ok) continue;
+        const wrapper = await response.json();
+        const content = wrapper.contents;
+
+        try {
+          const data = JSON.parse(content);
+          setRawJson(data);
+          foundName = deepSearch(data, ['product_name', 'product_name_ar', 'name', 'title', 'brand']);
+          foundImage = deepSearch(data, ['image_front_url', 'image_url', 'image', 'thumbnail']);
+          if (foundName) successfulProviderUrl = baseUrl;
+        } catch {
+          const h1Match = content.match(/<h1[^>]*>([\s\S]*?)<\/h1>/i) ||
+          content.match(/<h3[^>]*>([\s\S]*?)<\/h3>/i) ||
+          content.match(/itemprop="name">([\s\S]*?)<\/h1>/i);
+          const imgMatch = content.match(/<img[^>]*src="(https:\/\/[^"]+\.(?:jpg|jpeg|png|webp|gif))"/i) ||
+          content.match(/data-image-src="([^"]+)"/i);
+
+          if (h1Match) {
+            foundName = h1Match[1].replace(/<[^>]*>/g, '').trim();
+            foundImage = imgMatch ? imgMatch[1] : "";
+            successfulProviderUrl = baseUrl;
+          }
+        }
+      } catch (err) {
+        continue;
+      }
+    }
+
+    if (foundName) {
+      setFormData(prev => ({ ...prev, name: foundName, image: foundImage || prev.image, barcode: codeToSearch }));
+      setFetchStatus('success');
+      if (successfulProviderUrl) setSelectedProvider(successfulProviderUrl);
+    } else {
+      setFetchStatus('notfound');
+    }
+    setIsFetching(false);
+  };
+
+  const handleBulkCategoryChange = (newCat: string) => {
+    setProducts(prev => prev.map(p => selectedIds.includes(p.id) ? { ...p, category: newCat } : p));
+    setSelectedIds([]);
+  };
+
+  const initiateDelete = (ids: string[]) => {
+    if (settings.security.confirmDeleteInventory) {
+      setIsConfirmingDelete({ ids, isBulk: ids.length > 1 });
+    } else {
+      executeDelete(ids);
+    }
+  };
+
+  const executeDelete = (ids: string[]) => {
+    const itemsToDelete = products.filter(p => ids.includes(p.id));
+    setProducts(prev => prev.filter(p => !ids.includes(p.id)));
+    setUndoDelete({ items: itemsToDelete, timeLeft: 10 });
+    setSelectedIds([]);
+    setIsConfirmingDelete(null);
+    setDeletePass('');
+  };
+
+  const closeModal = () => {
+    setIsModalOpen(false);
+    setEditingProduct(null);
+    setRawJson(null);
+    setFetchStatus('idle');
+    setFormData({
+      category: t.general || 'عام',
+      minStock: 5,
+      cost: 0,
+      price: 0,
+      stock: 0,
+      supplierId: ''
+    });
+  };
+
+  const categories = useMemo(() => {
+    return [t.all || 'الكل', ...Array.from(new Set(products.map(p => p.category || (t.general || 'عام'))))];
+  }, [products, t]);
+
+  const sortedProducts = useMemo(() => {
+    let filtered = products.filter(p => {
+      const matchesSearch = p.name.toLowerCase().includes(searchQuery.toLowerCase()) || p.barcode.includes(searchQuery);
+      const matchesCategory = activeCategory === (t.all || 'الكل') || p.category === activeCategory;
+      return matchesSearch && matchesCategory;
+    });
+    return [...filtered].sort((a, b) => {
+      const aIsLow = a.stock <= a.minStock;
+      const bIsLow = b.stock <= b.minStock;
+      if (aIsLow && !bIsLow) return -1;
+      if (!aIsLow && bIsLow) return 1;
+      return b.id.localeCompare(a.id);
+    });
+  }, [products, searchQuery, activeCategory, t]);
+
+  return (
+    <div className="space-y-4 font-cairo p-2 md:p-4" dir="rtl">
+    {undoDelete && (
+      <div className="fixed bottom-10 left-1/2 -translate-x-1/2 z-[300] animate-bounce">
+      <div className="bg-gray-900 text-white p-4 rounded-3xl shadow-2xl flex items-center gap-6 border border-white/10">
+      <div className="relative w-14 h-14 flex items-center justify-center">
+      <svg className="absolute inset-0 w-full h-full -rotate-90">
+      <circle cx="28" cy="28" r="24" fill="none" stroke="currentColor" strokeWidth="4" className="text-white/10" />
+      <circle cx="28" cy="28" r="24" fill="none" stroke="#3b82f6" strokeWidth="4" strokeDasharray="150.8" style={{ strokeDashoffset: 150.8 - (150.8 * undoDelete.timeLeft) / 10, transition: 'stroke-dashoffset 1s linear' }} />
+      </svg>
+      <span className="text-lg font-black">{undoDelete.timeLeft}</span>
+      </div>
+      <div>
+      <p className="text-sm font-black">{t.operation_success || 'تمت العملية بنجاح'}!</p>
+      <button onClick={() => { setProducts(prev => [...prev, ...undoDelete.items]); setUndoDelete(null); }} className="text-primary font-black text-xs hover:underline">
+      {t.undo || 'تراجع الآن'}
+      </button>
+      </div>
+      </div>
+      </div>
+    )}
+
+    {isConfirmingDelete && (
+      <div className="fixed inset-0 bg-black/80 backdrop-blur-md z-[400] flex items-center justify-center p-4">
+      <div className="bg-white dark:bg-gray-900 p-8 rounded-[2.5rem] max-w-sm w-full text-center shadow-2xl">
+      <Lock className="text-red-500 mx-auto mb-6" size={40} />
+      <h2 className="text-xl font-black dark:text-white mb-6">{t.confirm_delete || 'تأكيد الحذف'}</h2>
+      <input
+      type="password"
+      value={deletePass}
+      onChange={e => setDeletePass(e.target.value)}
+      className="w-full p-4 bg-gray-100 dark:bg-gray-800 rounded-2xl text-center text-2xl mb-6 outline-none dark:text-white"
+      placeholder={t.password || 'الرمز السري'}
+      autoFocus
+      />
+      <div className="flex gap-3">
+      <button onClick={() => { if(deletePass === currentUser.password) executeDelete(isConfirmingDelete.ids); else alert(t.wrong_password || 'خطأ في الرمز'); }} className="flex-[2] bg-red-500 text-white py-4 rounded-2xl font-black shadow-lg">
+      {t.delete || 'حذف'}
+      </button>
+      <button onClick={() => setIsConfirmingDelete(null)} className="flex-1 bg-gray-100 dark:bg-gray-800 dark:text-white py-4 rounded-2xl">
+      {t.cancel || 'إلغاء'}
+      </button>
+      </div>
+      </div>
+      </div>
+    )}
+
+    <div className="sticky top-0 z-[100] bg-white/80 dark:bg-gray-900/80 backdrop-blur-xl border-b dark:border-white/5 -mx-4 px-4 py-4 space-y-4 shadow-sm">
+    <div className="max-w-[1600px] mx-auto flex flex-col md:flex-row justify-between items-center gap-4">
+    <div className="flex items-center gap-4 w-full md:w-auto">
+    <div className="w-12 h-12 bg-primary/10 rounded-2xl flex items-center justify-center text-primary">
+    <Package size={24}/>
+    </div>
+    <div className="flex items-center gap-3">
+    <h1 className="text-lg font-black dark:text-white">{t.inventory || 'المخزون'}</h1>
+    {selectedIds.length > 0 && (
+      <div className="flex gap-2">
+      <button onClick={() => initiateDelete(selectedIds)} className="bg-red-500 text-white px-3 py-1.5 rounded-xl text-[10px] font-black flex items-center gap-2 shadow-lg animate-pulse">
+      <Trash2 size={12}/> {t.delete || 'حذف'} ({selectedIds.length})
+      </button>
+      <select
+      onChange={(e) => handleBulkCategoryChange(e.target.value)}
+      className="bg-blue-600 text-white px-3 py-1.5 rounded-xl text-[10px] font-black shadow-lg outline-none cursor-pointer appearance-none"
+      defaultValue=""
+      >
+      <option value="" disabled>{t.move_to_category || 'نقل إلى صنف...'}</option>
+      {categories.filter(c => c !== (t.all || 'الكل')).map(cat => (
+        <option key={cat} value={cat} className="text-black">{cat}</option>
+      ))}
+      </select>
+      </div>
+    )}
+    </div>
+    </div>
+
+    <div className="flex flex-1 items-center gap-3 w-full md:max-w-2xl">
+    <div className="relative flex-1 group">
+    <Search className="absolute right-4 top-1/2 -translate-y-1/2 text-gray-400 group-focus-within:text-primary transition-colors" size={18} />
+    <input
+    type="text"
+    placeholder={t.search_placeholder || 'ابحث بالاسم أو امسح باركود...'}
+    value={searchQuery}
+    onChange={e => setSearchQuery(e.target.value)}
+    className="w-full pr-12 pl-14 py-3 bg-gray-100 dark:bg-gray-800 dark:text-white rounded-2xl text-xs font-bold outline-none border border-transparent focus:border-primary/30 transition-all"
+    />
+    <div className="absolute left-3 top-1/2 -translate-y-1/2 flex items-center gap-2">
+    <button
+    type="button"
+    className="p-1.5 bg-white dark:bg-gray-700 text-primary rounded-xl shadow-sm hover:scale-110 active:scale-95 transition-all"
+    onClick={() => setIsScannerOpen(true)}
+    title={t.scan_barcode || 'مسح باركود'}
+    >
+    <Camera size={16} />
+    </button>
+    </div>
+    </div>
+    <button
+    onClick={() => { closeModal(); setIsModalOpen(true); }}
+    className="bg-primary text-white px-6 py-3 rounded-2xl font-black text-xs flex items-center gap-2 shadow-lg shrink-0"
+    >
+    <Plus size={20} /> {t.add || 'إضافة'}
+    </button>
+    </div>
+    </div>
+
+    <div className="max-w-[1600px] mx-auto flex gap-2 overflow-x-auto no-scrollbar pb-1">
+    {categories.map(cat => (
+      <button
+      key={cat}
+      onClick={() => setActiveCategory(cat)}
+      className={`px-5 py-2 rounded-xl text-[11px] font-black whitespace-nowrap transition-all ${activeCategory === cat ? 'bg-primary text-white shadow-md scale-105' : 'bg-gray-100 dark:bg-gray-800 text-gray-400'}`}
+      >
+      {cat}
+      </button>
+    ))}
+    </div>
+    </div>
+
+    {isModalOpen && (
+      <div className="fixed inset-0 bg-black/60 backdrop-blur-sm z-[200] flex items-center justify-center p-2">
+      <div className="bg-white dark:bg-gray-800 w-full max-w-5xl rounded-[2.5rem] p-6 shadow-2xl flex flex-col md:flex-row gap-6 max-h-[90vh] overflow-y-auto">
+      <div className="flex-1">
+      <div className="flex justify-between items-center mb-6">
+      <h2 className="text-xl font-black dark:text-white">
+      {editingProduct ? (t.edit_product || 'تعديل المنتج') : (t.add_product || 'إضافة منتج ذكية')}
+      </h2>
+      <div className="flex gap-2">
+      <button onClick={() => setShowRawData(!showRawData)} className={`p-2.5 rounded-xl ${showRawData ? 'bg-primary text-white' : 'bg-primary/10 text-primary'}`}>
+      <Eye size={20}/>
+      </button>
+      <button onClick={closeModal} className="p-2.5 bg-gray-100 dark:bg-gray-700 rounded-xl dark:text-white">
+      <X size={20}/>
+      </button>
+      </div>
+      </div>
+      <div className="grid grid-cols-1 md:grid-cols-12 gap-6">
+      <div className="md:col-span-4 space-y-4">
+      <div
+      onClick={() => fileInputRef.current?.click()}
+      className="aspect-square bg-gray-50 dark:bg-gray-900 rounded-[2rem] border-2 border-dashed border-gray-200 dark:border-white/5 flex items-center justify-center cursor-pointer relative overflow-hidden"
+      >
+      {formData.image ? (
+        <img src={formData.image} className="w-full h-full object-cover" alt="product" />
+      ) : (
+        <ImageIcon size={48} className="text-gray-300" />
+      )}
+      <input
+      ref={fileInputRef}
+      type="file"
+      className="hidden"
+      onChange={e => {
+        const file = e.target.files?.[0];
+        if (file) {
+          const reader = new FileReader();
+          reader.onloadend = () => setFormData({...formData, image: reader.result as string /* compressed below */});
+          reader.readAsDataURL(file);
+        }
+      }}
+      />
+      </div>
+      <div className="space-y-2">
+      <label className="text-[10px] font-black text-gray-400 mr-2 uppercase tracking-widest">
+      {t.data_source || 'مصدر البحث'}
+      </label>
+      <select
+      value={selectedProvider}
+      onChange={(e) => setSelectedProvider(e.target.value)}
+      className="w-full p-3.5 bg-gray-50 dark:bg-gray-900 dark:text-white rounded-2xl text-xs font-black outline-none border-none"
+      >
+      {providers.map(p => <option key={p.id} value={p.url}>{p.name}</option>)}
+      </select>
+      <div className="relative flex gap-2">
+      <div className="relative flex-1">
+      <input
+      value={formData.barcode || ''}
+      onChange={e => setFormData({...formData, barcode: e.target.value})}
+      className="w-full p-4 bg-gray-50 dark:bg-gray-900 dark:text-white rounded-2xl text-sm font-black text-center focus:ring-2 ring-primary transition-all"
+      placeholder={t.barcode || 'الباركود'}
+      />
+      <button onClick={() => handleOnlineLookup()} className="absolute left-2 top-1/2 -translate-y-1/2 bg-primary text-white p-2 rounded-xl">
+      {isFetching ? <Loader2 className="animate-spin" size={18}/> : <Globe size={18}/>}
+      </button>
+      </div>
+      <button
+      onClick={() => setIsScannerOpen(true)}
+      className="p-4 bg-gray-100 dark:bg-gray-900 text-primary rounded-2xl shadow-sm hover:scale-105 active:scale-95 transition-all"
+      >
+      <Camera size={20} />
+      </button>
+      </div>
+      <div className="px-2 min-h-[20px]">
+      {fetchStatus === 'searching' && (
+        <p className="text-[10px] text-blue-500 font-bold flex items-center gap-1 animate-pulse">
+        <Loader2 size={10} className="animate-spin"/> {t.searching || 'جاري البحث...'}
+        </p>
+      )}
+      {fetchStatus === 'success' && (
+        <p className="text-[10px] text-green-500 font-black flex items-center gap-1">
+        <CheckCircle2 size={10}/> {t.operation_success || 'تم الجلب بنجاح!'}
+        </p>
+      )}
+      {fetchStatus === 'notfound' && (
+        <p className="text-[10px] text-orange-500 font-bold flex items-center gap-1">
+        <AlertCircle size={10}/> {t.product_not_found || 'المنتج غير مسجل عالمياً'}
+        </p>
+      )}
+      {fetchStatus === 'error' && (
+        <p className="text-[10px] text-red-500 font-bold flex items-center gap-1">
+        <AlertCircle size={10}/> {t.connection_error || 'خطأ في الاتصال'}
+        </p>
+      )}
+      </div>
+      </div>
+      </div>
+      <div className="md:col-span-8 grid grid-cols-2 gap-4">
+      <div className="col-span-2">
+      <label className="text-[10px] font-black text-gray-400 mb-1 block uppercase mr-2 tracking-widest">
+      {t.product_name || 'اسم المنتج'}
+      </label>
+      <input
+      value={formData.name || ''}
+      onChange={e => setFormData({...formData, name: e.target.value})}
+      className="w-full p-4 bg-gray-50 dark:bg-gray-900 dark:text-white rounded-2xl text-sm font-black outline-none"
+      placeholder={t.product_name_placeholder || 'اسم المنتج...'}
+      />
+      </div>
+      <div>
+      <label className="text-[10px] font-black text-gray-400 mb-1 block uppercase mr-2 tracking-widest">
+      {t.category || 'الفئة'}
+      </label>
+      <input
+      list="categories-list"
+      value={formData.category || ''}
+      onChange={e => setFormData({...formData, category: e.target.value})}
+      onMouseDown={(e) => {
+        const input = e.target as HTMLInputElement;
+        const originalValue = input.value;
+        input.value = '';
+    setTimeout(() => { input.value = originalValue; }, 1);
+      }}
+      className="w-full p-4 bg-gray-50 dark:bg-gray-900 dark:text-white rounded-2xl text-sm font-black outline-none border-2 border-transparent focus:border-primary/20 transition-all"
+      placeholder={t.category_placeholder || 'اكتب أو اختر...'}
+      />
+      <datalist id="categories-list">
+      {categories.filter(cat => cat !== (t.all || 'الكل')).map(cat => <option key={cat} value={cat} />)}
+      </datalist>
+      </div>
+      <div>
+      <label className="text-[10px] font-black text-gray-400 mb-1 block uppercase mr-2">
+      {t.supplier || 'المورد'}
+      </label>
+      <select
+      value={formData.supplierId}
+      onChange={e => setFormData({...formData, supplierId: e.target.value})}
+      className="w-full p-4 bg-gray-50 dark:bg-gray-900 dark:text-white rounded-2xl text-sm font-black outline-none"
+      >
+      <option value="">{t.not_specified || 'غير محدد'}</option>
+      {suppliers.map(s => <option key={s.id} value={s.id}>{s.name}</option>)}
+      </select>
+      </div>
+      <div className="col-span-2 grid grid-cols-3 gap-3 pt-2">
+      <div className="bg-blue-500/5 p-4 rounded-3xl border border-blue-500/10 text-center">
+      <label className="text-[10px] font-black text-blue-500 block mb-1">{t.cost || 'التكلفة'}</label>
+      <input
+      type="number"
+      value={formData.cost || ''}
+      onChange={e => setFormData({...formData, cost: Number(e.target.value)})}
+      className="w-full bg-transparent dark:text-white text-xl font-black text-center outline-none"
+      />
+      </div>
+      <div className="bg-green-500/5 p-4 rounded-3xl border border-green-500/10 text-center">
+      <label className="text-[10px] font-black text-green-500 block mb-1">{t.price || 'البيع'}</label>
+      <input
+      type="number"
+      value={formData.price || ''}
+      onChange={e => setFormData({...formData, price: Number(e.target.value)})}
+      className="w-full bg-transparent dark:text-white text-xl font-black text-center outline-none"
+      />
+      </div>
+      <div className="bg-purple-500/5 p-4 rounded-3xl border border-purple-500/10 text-center">
+      <label className="text-[10px] font-black text-purple-500 block mb-1">{t.stock || 'الكمية'}</label>
+      <input
+      type="number"
+      value={formData.stock || ''}
+      onChange={e => setFormData({...formData, stock: Number(e.target.value)})}
+      className="w-full bg-transparent dark:text-white text-xl font-black text-center outline-none"
+      />
+      </div>
+      </div>
+      <div className="col-span-2 bg-red-500/5 p-4 rounded-3xl border border-red-500/10 flex items-center justify-between">
+      <div>
+      <label className="text-[10px] font-black text-red-500 block uppercase tracking-widest">
+      {t.min_stock || 'الحد الأدنى للمخزون'}
+      </label>
+      <p className="text-[9px] text-gray-400 font-bold">
+      {t.stock_alert || 'تنبيه عند نقص الكمية عن هذا الرقم'}
+      </p>
+      </div>
+      <input
+      type="number"
+      value={formData.minStock || ''}
+      onChange={e => setFormData({...formData, minStock: Number(e.target.value)})}
+      className="w-24 bg-white dark:bg-gray-900 dark:text-white p-3 rounded-2xl text-xl font-black text-center outline-none ring-1 ring-red-500/20"
+      />
+      </div>
+      </div>
+      </div>
+      <div className="flex gap-3 mt-8">
+      <button
+      onClick={() => {
+        if(!formData.name || !formData.price) return alert(t.required_fields || 'الاسم والسعر مطلوبان');
+        // Duplicate check - same barcode or same name
+        if (!editingProduct) {
+          const dupBarcode = formData.barcode && products.find(p => p.barcode && p.barcode === formData.barcode);
+          const dupName = products.find(p => p.name.toLowerCase().trim() === (formData.name || '').toLowerCase().trim());
+          if (dupBarcode) {
+            alert((t.duplicate_barcode || 'يوجد منتج بنفس الباركود') + ': ' + dupBarcode.name);
+            return;
+          }
+          if (dupName) {
+            if (!window.confirm((t.duplicate_name || 'يوجد منتج بنفس الاسم') + ': ' + dupName.name + '\n' + (t.continue_anyway || 'هل تريد المتابعة؟'))) return;
+          }
+        }
+        if(editingProduct) setProducts(products.map(p => p.id === editingProduct.id ? {...p, ...formData} as any : p));
+        else setProducts([...products, {id: Math.random().toString(36).substr(2, 9).toUpperCase(), ...formData} as any]);
+        closeModal();
+      }}
+      className="flex-[2] bg-primary text-white py-5 rounded-[1.5rem] font-black text-sm shadow-xl flex items-center justify-center gap-3"
+      >
+      <Sparkles size={20}/> {editingProduct ? (t.update || 'تحديث') : (t.save || 'حفظ المنتج')}
+      </button>
+      <button
+      onClick={closeModal}
+      className="flex-1 bg-gray-100 dark:bg-gray-700 dark:text-white py-5 rounded-[1.5rem] font-black text-sm"
+      >
+      {t.cancel || 'إلغاء'}
+      </button>
+      </div>
+      </div>
+      {showRawData && (
+        <div className="w-72 bg-gray-950 rounded-[1.5rem] p-4 hidden xl:block overflow-auto border border-white/5 font-mono text-[10px] text-green-400">
+        <div className="border-b border-white/10 pb-2 mb-3 text-primary font-black uppercase tracking-widest">
+        {t.raw_data_scan || 'Raw Data Scan'}
+        </div>
+        <pre>{JSON.stringify(rawJson || {status: "No data fetched yet"}, null, 2)}</pre>
+        </div>
+      )}
+      </div>
+      </div>
+    )}
+
+    {/* نافذة الكاميرا الخاصة بالمخزون */}
+    {isScannerOpen && (
+      <BarcodeScanner
+        onScan={(code) => {
+          setIsScannerOpen(false);
+          if (isModalOpen) {
+            setFormData(prev => ({ ...prev, barcode: code }));
+            handleOnlineLookup(code);
+          } else {
+            setSearchQuery(code);
+          }
+        }}
+        onClose={() => setIsScannerOpen(false)}
+        title={t.scan_product || 'مسح منتج'}
+        hint={t.scan_product_hint || 'وجّه الكاميرا نحو باركود المنتج'}
+        t={t}
+      />
+    )}
+
+    <div className="bg-white dark:bg-gray-800 rounded-[2.5rem] overflow-hidden shadow-sm border dark:border-white/5">
+    <div className="overflow-x-auto">
+    <table className="w-full text-right min-w-[800px]">
+    <thead className="bg-gray-50/50 dark:bg-gray-900/50 text-gray-400 font-black text-[10px] uppercase border-b dark:border-white/5">
+    <tr>
+    <th className="p-5 w-14 text-center">
+    <button onClick={() => {
+      const visibleIds = sortedProducts.map(p => p.id);
+      const allVisibleSelected = visibleIds.length > 0 && visibleIds.every(id => selectedIds.includes(id));
+      if (allVisibleSelected) setSelectedIds(prev => prev.filter(id => !visibleIds.includes(id)));
+      else setSelectedIds(prev => Array.from(new Set([...prev, ...visibleIds])));
+    }} className="text-primary">
+    {sortedProducts.length > 0 && sortedProducts.every(p => selectedIds.includes(p.id)) ? <CheckSquare size={20}/> : <Square size={20}/>}
+    </button>
+    </th>
+    <th className="p-5">{t.product || 'المنتج'}</th>
+    <th className="p-5 text-center">{t.price || 'السعر'}</th>
+    <th className="p-5 text-center">{t.stock || 'المخزون'}</th>
+    <th className="p-5 text-center">{t.actions || 'الإجراءات'}</th>
+    </tr>
+    </thead>
+    <tbody className="divide-y dark:divide-white/5 font-bold">
+    {sortedProducts.map(p => (
+      <tr key={p.id} className={`${selectedIds.includes(p.id) ? 'bg-primary/5' : ''} hover:bg-gray-50/50 dark:hover:bg-white/[0.01] transition-all`}>
+      <td className="p-5 text-center">
+      <button onClick={() => setSelectedIds(prev => prev.includes(p.id) ? prev.filter(i => i !== p.id) : [...prev, p.id])} className="text-gray-300">
+      {selectedIds.includes(p.id) ? <CheckSquare className="text-primary" size={20}/> : <Square size={20}/>}
+      </button>
+      </td>
+      <td className="p-5 flex items-center gap-4">
+      <div className="w-14 h-14 bg-gray-100 dark:bg-gray-700 rounded-2xl overflow-hidden border dark:border-white/5">
+      {p.image ? (
+        <img src={p.image} className="w-full h-full object-cover" alt="product" />
+      ) : (
+        <Package className="w-full h-full p-4 text-gray-300"/>
+      )}
+      </div>
+      <div>
+      <p className="font-black dark:text-white text-base leading-tight flex items-center gap-2">
+      {p.name} {p.stock <= p.minStock && <AlertTriangle size={14} className="text-red-500 animate-pulse" />}
+      </p>
+      <p className="text-[10px] text-gray-400 font-black tracking-widest uppercase">{p.barcode}</p>
+      </div>
+      </td>
+      <td className="p-5 text-center font-black dark:text-white text-lg">
+      {p.price.toFixed(2)} <span className="text-[10px] opacity-40">{settings.currency}</span>
+      </td>
+      <td className="p-5 text-center">
+      <span className={`px-4 py-1.5 rounded-xl text-[10px] font-black inline-flex items-center gap-2 ${p.stock <= p.minStock ? 'bg-red-500/10 text-red-600 ring-1 ring-red-500/20' : 'bg-green-500/10 text-green-500 ring-1 ring-green-500/20'}`}>
+      <div className={`w-2 h-2 rounded-full ${p.stock <= p.minStock ? 'bg-red-500 shadow-[0_0_8px_red]' : 'bg-green-500'}`} />
+      {p.stock} {t.unit || 'قطعة'}
+      </span>
+      </td>
+      <td className="p-5 text-center">
+      <div className="flex justify-center gap-2">
+      <button onClick={() => {setEditingProduct(p); setFormData(p); setIsModalOpen(true);}} className="p-3 text-blue-500 hover:bg-blue-50 dark:hover:bg-blue-900/20 rounded-xl">
+      <Edit2 size={18}/>
+      </button>
+      <button onClick={() => initiateDelete([p.id])} className="p-3 text-red-500 hover:bg-red-50 dark:hover:bg-red-900/20 rounded-xl">
+      <Trash2 size={18}/>
+      </button>
+      </div>
+      </td>
+      </tr>
+    ))}
+    </tbody>
+    </table>
+    </div>
+    </div>
+    </div>
+  );
+};
+
+export default Inventory;
