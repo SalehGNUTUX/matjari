@@ -1,8 +1,8 @@
-# متجري | MATJARI POS
-### نظام إدارة المبيعات الذكي — v2.9.1 Beta
+ متجري | MATJARI POS
+### نظام إدارة المبيعات الذكي — v2.9.2 Beta
 
 [![License: GPL v3](https://img.shields.io/badge/License-GPLv3-blue.svg)](https://github.com/SalehGNUTUX/matjari/blob/main/LICENSE)
-[![Release](https://img.shields.io/badge/Release-v2.9.1--beta-green)](https://github.com/SalehGNUTUX/matjari/releases/tag/Matjari-2.9.1)
+[![Release](https://img.shields.io/badge/Release-v2.9.2--beta-green)](https://github.com/SalehGNUTUX/matjari/releases/tag/Matjari-2.9.2-beta)
 
 ---
 
@@ -10,34 +10,35 @@
 
 | المنصة | الملف | الحجم |
 |--------|-------|-------|
-| 📱 **Android APK** | [Matjari-app-2.9.1.apk](https://github.com/SalehGNUTUX/matjari/releases/download/Matjari-2.9.1/Matjari-app-2.9.1.apk) | — |
-| 🐧 **Linux AppImage (x86_64)** | [Matjari-2.9.1-x86_64.AppImage](https://github.com/SalehGNUTUX/matjari/releases/download/Matjari-2.9.1/Matjari-2.9.1-x86_64.AppImage) | — |
+| 📱 **Android APK** | [Matjari-app-2.9.2.apk](https://github.com/SalehGNUTUX/matjari/releases/download/Matjari-2.9.2-beta/Matjari-app-2.9.2.apk) | — |
+| 🐧 **Linux AppImage (x86_64)** | [Matjari-2.9.2-x86_64.AppImage](https://github.com/SalehGNUTUX/matjari/releases/download/Matjari-2.9.2-beta/Matjari-2.9.2-x86_64.AppImage) | — |
 
-> 📦 [جميع ملفات الإصدار](https://github.com/SalehGNUTUX/matjari/releases/tag/Matjari-2.9.1)
+> 📦 [جميع ملفات الإصدار](https://github.com/SalehGNUTUX/matjari/releases/tag/Matjari-2.9.2-beta)
 
 ---
 
-## 🆕 مستجدات الإصدار 2.9.1
+## 🆕 مستجدات الإصدار 2.9.2
 
-### ✅ إصلاحات جذرية
-- **تعطل التطبيق عند الفتح** — إصلاح `loadFromStorage` و `INITIAL_SETTINGS` المحذوفَين خطأً
-- **Rules of Hooks** — نقل `useEffect` زر الرجوع قبل الـ conditional return منعاً لتعطل React
-- **أيقونة Printer** — إضافة الاستيراد الناقص في قسم البحث الشامل
+### 🔧 إصلاحات جوهرية
 
-### 🆕 مزايا جديدة
+| # | المشكلة | الإصلاح |
+|---|---------|---------|
+| 1 | **نافذة الكاميرا شفافة** | خلفية سوداء صلبة (`#000000`) بدلاً من `bg-black/92` لضمان وضوح واجهة المسح |
+| 2 | **رابط GitHub يفتح داخل التطبيق** | إضافة `import { openExternalLink }` المفقود في `Settings.tsx` لفتح الروابط في المتصفح الخارجي |
+| 3 | **الآلة الحاسبة تكتب الرقم مرتين** | استبدال `onClick` + `onTouchStart` بـ `onPointerDown` مع `preventDefault()` لمنع التنفيذ المزدوج على شاشات اللمس |
+| 4 | **حفظ الصورة لا يعمل على Android 10+** | استخدام `Directory.Cache` + `Share.share` بدلاً من `ExternalStorage` الذي أصبح مقيداً في الإصدارات الحديثة |
+| 5 | **QR يحمل كامل بيانات الفاتورة** | استبدال QR Code بـ **باركود Code 128** يحمل الرقم التسلسلي فقط (`MTJR-XXXXXX`) لسهولة المسح والبحث |
+| 6 | **معاينة الفاتورة** | استبدال `<QRCodeSVG>` بمكوّن `<InvoiceBarcode>` في كل من شاشة البيع و ReprintModal |
+| 7 | **HTML المطبوع** | تضمين الباركود كـ SVG نصي مباشرة في HTML المُولَّد بدون الحاجة لالتقاط DOM |
+
+### ✨ مزايا جديدة
 
 | الميزة | التفاصيل |
 |--------|---------|
-| **مسح الباركود بالكاميرا** | يفتح كاميرا النظام مباشرة على Android عبر `@capacitor/camera`، يلتقط الصورة ثم `jsqr` يحلل الرمز |
-| **مسح الباركود من صورة** | اختيار صورة من المعرض وقراءة الرمز منها — يعمل على Android والمتصفح |
-| **إدخال الباركود يدوياً** | نافذة المسح توفر 3 أوضاع: كاميرا / صورة / يدوي |
-| **طباعة الفاتورة على Android** | الفاتورة تتحول إلى صورة PNG بدقة عالية ثم تُشارك مع تطبيقات الطباعة وGoogle Drive وWhatsApp |
-| **إعادة طباعة الفواتير** | زر "طباعة" في كل فاتورة بقائمة المبيعات يفتح معاينة كاملة مع خياري طباعة وحفظ PNG |
-| **ErrorBoundary** | عند حدوث أي خطأ تظهر شاشة واضحة مع زر "إنعاش التطبيق" |
-| **زر الرجوع Android** | زر الرجوع يتنقل بين الأقسام بدلاً من إغلاق التطبيق |
-| **روابط خارجية** | الروابط تفتح في المتصفح الخارجي لا داخل التطبيق |
-| **أيقونة كاميرا في المخزون** | إضافة زر مسح باركود في خانة بحث المخزون |
-| **الشريط العلوي للهاتف** | تقليص ارتفاعه لتوفير مساحة أكبر للمحتوى |
+| **مكوّن باركود مخصص** | إنشاء `InvoiceBarcode.tsx` لتوليد باركود **Code 128** أفقي خفيف الوزن بدون مكتبات خارجية |
+| **رقم تسلسلي موحد** | توليد رقم تسلسلي للفاتورة بصيغة `MTJR-XXXXXX` يُستخدم كمعرّف فريد وللباركود |
+| **بحث متوافق** | `SearchHub.handleQRScan` يتعامل مع الباركود الجديد: يبحث مباشرة عن الرقم التسلسلي عند المسح |
+| **سكريبت بناء آلي** | إضافة `build-apk.sh` لبناء APK خطوة بخطوة مع التحقق من الأخطاء وتقرير مفصل |
 
 ---
 
@@ -51,14 +52,14 @@
 
 | القسم | الوصف |
 |-------|-------|
-| 🛒 **نقطة البيع** | مسح باركود، سلة مبيعات، خصومات، طرق دفع متعددة، طباعة فاتورة + QR |
+| 🛒 **نقطة البيع** | مسح باركود، سلة مبيعات، خصومات، طرق دفع متعددة، طباعة فاتورة + باركود |
 | 📦 **المخزون** | إضافة/تعديل منتجات، جلب معلومات تلقائي عبر الباركود |
 | 👥 **الزبائن** | نقاط الولاء، سجل المشتريات، القسائم |
 | 🚚 **الموردون** | إدارة الموردين وربطهم بالمنتجات |
 | 💳 **الديون** | تتبع ديون الزبائن، دفعات جزئية، تنبيهات التأخر |
 | ⭐ **الزكاة** | حاسبة زكاة المال حسب المذاهب الأربعة |
 | 📊 **لوحة التحكم** | إحصائيات المبيعات، رسوم بيانية، تقارير |
-| 🔍 **البحث الشامل** | البحث في المبيعات، مسح QR، إعادة طباعة، معالجة المرتجعات |
+| 🔍 **البحث الشامل** | البحث في المبيعات، مسح باركود، إعادة طباعة، معالجة المرتجعات |
 | ⚙️ **الإعدادات** | موظفون، صلاحيات، طابعة حرارية، لغة |
 
 **اللغات:** العربية 🇲🇦 · English · Français
@@ -77,7 +78,7 @@
 
 ## 📲 تثبيت Android APK
 
-1. حمِّل ملف `Matjari-app-2.9.1.apk`
+1. حمِّل ملف `Matjari-app-2.9.2.apk`
 2. فعِّل **"تثبيت من مصادر غير معروفة"** في إعدادات الهاتف
 3. افتح الملف وثبِّته
 
@@ -86,8 +87,8 @@
 ## 🐧 تشغيل Linux AppImage
 
 ```bash
-chmod +x Matjari-2.9.1-x86_64.AppImage
-./Matjari-2.9.1-x86_64.AppImage
+chmod +x Matjari-2.9.2-x86_64.AppImage
+./Matjari-2.9.2-x86_64.AppImage
 ```
 
 ---
@@ -96,13 +97,14 @@ chmod +x Matjari-2.9.1-x86_64.AppImage
 
 | المشكلة | المنصة | الحالة |
 |---------|--------|--------|
-| صلاحيات الكاميرا والتخزين في إعدادات النظام | Android | 🔧 قيد الحل |
-| مسح الباركود مباشرة بكاميرا Android | Android | 🔧 جزئي — يعمل عبر التقاط صورة |
+| صلاحيات الكاميرا والتخزين في إعدادات النظام | Android | 🔧 قيد التحسين |
+| مسح الباركود مباشرة من كاميرا Android | Android | ✅ يعمل عبر التقاط الصورة وتحليلها |
 
 ---
 
 ## 🛠️ البناء من المصدر
 
+### الطريقة اليدوية:
 ```bash
 npm install
 npx cap add android
@@ -113,11 +115,22 @@ npx cap sync android
 cd android && ./gradlew assembleDebug
 ```
 
+### الطريقة الآلية (موصى بها):
+```bash
+chmod +x build-apk.sh
+./build-apk.sh
+```
+
+السكريبت الآلي يقوم ببناء التطبيق خطوة بخطوة مع:
+- التحقق من نجاح كل أمر قبل الانتقال للتالي
+- عرض تقرير مفصل بالألوان
+- إيقاف العمل فور حدوث أي خطأ مع توضيح سببه
+
 ---
 
 ## 🏗️ التقنيات
 
-`React 18` · `TypeScript` · `Vite 5` · `Tailwind CSS` · `Electron 28` · `Capacitor 6` · `Recharts` · `html5-qrcode` · `jsqr` · `html2canvas`
+`React 18` · `TypeScript` · `Vite 5` · `Tailwind CSS` · `Electron 28` · `Capacitor 6` · `Recharts` · `jsbarcode` · `jsqr` · `html2canvas`
 
 ---
 
