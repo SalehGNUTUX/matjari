@@ -14,6 +14,7 @@
     --primary:#3b82f6;--primary2:#1d4ed8;--accent:#06b6d4;
     --border:rgba(0,0,0,0.07);--shadow:0 1px 3px rgba(0,0,0,0.08),0 4px 16px rgba(0,0,0,0.05);
     --radius:16px;--radius2:24px;
+    --success:#22c55e;--success-bg:rgba(34,197,94,0.12);
   }
   @media(prefers-color-scheme:dark){
     :root{--bg:#0a0f1a;--bg2:#111827;--bg3:#1e293b;--card:#1a2233;
@@ -70,12 +71,15 @@
   .cl-card{background:var(--card);border:1px solid var(--border);border-radius:var(--radius2);padding:20px;box-shadow:var(--shadow)}
   .cl-card.new{border-color:rgba(59,130,246,.3)}
   .cl-card.fix{border-color:rgba(34,197,94,.3)}
-  .cl-header{display:flex;align-items:center;gap:10px;margin-bottom:12px}
+  .cl-card.enhance{border-color:rgba(245,158,11,.3)}
+  .cl-header{display:flex;align-items:center;gap:10px;margin-bottom:12px;flex-wrap:wrap}
   .cl-badge{font-size:11px;font-weight:700;padding:3px 10px;border-radius:20px}
   .cl-badge.new{background:rgba(59,130,246,.12);color:var(--primary)}
   .cl-badge.fix{background:rgba(34,197,94,.12);color:#16a34a}
+  .cl-badge.enhance{background:rgba(245,158,11,.12);color:#d97706}
   .cl-title{font-size:15px;font-weight:700}
   .cl-desc{font-size:13px;color:var(--text2);line-height:1.6}
+  .cl-desc code{background:var(--bg2);padding:2px 6px;border-radius:6px;font-size:11px}
 
   /* FEATURES */
   .features-grid{max-width:1100px;margin:0 auto;display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:20px}
@@ -116,6 +120,12 @@
   .mock-total-label{font-size:11px;color:var(--text2);font-weight:700}
   .mock-total-num{font-size:22px;font-weight:900;color:var(--primary)}
   .mock-btn{background:var(--primary);color:#fff;border:none;border-radius:12px;padding:12px;font-size:14px;font-weight:900;font-family:'Cairo',sans-serif;cursor:pointer;text-align:center}
+
+  /* BARCODE PREVIEW */
+  .barcode-preview{background:var(--card);border:1px solid var(--border);border-radius:14px;padding:16px;text-align:center;margin-top:16px}
+  .barcode-demo{background:#fff;padding:16px;border-radius:12px;display:inline-block}
+  .barcode-label{font-size:10px;color:var(--text3);margin-top:8px}
+  .barcode-serial{font-size:12px;font-weight:700;color:var(--primary);font-family:monospace}
 
   /* ROADMAP */
   .roadmap-grid{max-width:900px;margin:0 auto;display:flex;flex-direction:column;gap:0}
@@ -183,19 +193,19 @@
       <a href="#features" class="nav-link">المميزات</a>
       <a href="#roadmap" class="nav-link">خارطة الطريق</a>
       <a href="https://github.com/SalehGNUTUX/matjari" target="_blank" rel="noopener" class="nav-link">GitHub</a>
-      <a href="https://github.com/SalehGNUTUX/matjari/releases/tag/Matjari-2.9.1" target="_blank" rel="noopener" class="nav-btn">تحميل v2.9.1</a>
+      <a href="https://github.com/SalehGNUTUX/matjari/releases/tag/Matjari-2.9.2-beta" target="_blank" rel="noopener" class="nav-btn">تحميل v2.9.2</a>
     </div>
   </div>
 </nav>
 
 <!-- HERO -->
 <section class="hero">
-  <div class="hero-badge"><span class="hero-badge-dot"></span>الإصدار 2.9.1 Beta — تحديث جديد</div>
+  <div class="hero-badge"><span class="hero-badge-dot"></span>الإصدار 2.9.2 Beta — تحول من QR إلى باركود Code 128</div>
   <h1>نقطة بيع ذكية<br><span class="accent">لكل متجر</span></h1>
   <p class="hero-sub">برنامج مفتوح المصدر لإدارة المبيعات، يعمل على <strong>GNU/Linux</strong> و<strong>Android</strong> — بدون اشتراك، بدون سحابة، بياناتك ملكك.</p>
   <div class="hero-actions">
-    <a href="https://github.com/SalehGNUTUX/matjari/releases/download/Matjari-2.9.1/Matjari-app-2.9.1.apk" class="btn-primary">📱 تحميل APK Android</a>
-    <a href="https://github.com/SalehGNUTUX/matjari/releases/download/Matjari-2.9.1/Matjari-2.9.1-x86_64.AppImage" class="btn-outline">🐧 تحميل Linux AppImage</a>
+    <a href="https://github.com/SalehGNUTUX/matjari/releases/download/Matjari-2.9.2-beta/Matjari-app-2.9.2.apk" class="btn-primary">📱 تحميل APK Android</a>
+    <a href="https://github.com/SalehGNUTUX/matjari/releases/download/Matjari-2.9.2-beta/Matjari-2.9.2-x86_64.AppImage" class="btn-outline">🐧 تحميل Linux AppImage</a>
   </div>
   <div class="hero-stats">
     <div class="stat"><span class="stat-num">9</span><span class="stat-label">أقسام متكاملة</span></div>
@@ -218,42 +228,66 @@
 <!-- CHANGELOG -->
 <section id="changelog" class="changelog-section">
   <div class="section-center">
-    <div class="section-tag">جديد في v2.9.1</div>
+    <div class="section-tag">جديد في v2.9.2</div>
     <h2>ما الذي تغيَّر؟</h2>
-    <p class="section-desc">إصلاحات جذرية ومزايا جديدة في هذا الإصدار</p>
+    <p class="section-desc">إصلاحات جذرية وتحول نوعي من QR إلى باركود Code 128</p>
   </div>
   <div class="changelog-grid" style="max-width:900px;margin:0 auto">
     <div class="cl-card fix">
-      <div class="cl-header"><span class="cl-badge fix">إصلاح</span><span class="cl-title">تعطل التطبيق عند الفتح</span></div>
-      <div class="cl-desc">إصلاح ثوابت <code>loadFromStorage</code> و<code>INITIAL_SETTINGS</code> وخطأ Rules of Hooks الذي كان يمنع تشغيل التطبيق نهائياً.</div>
-    </div>
-    <div class="cl-card new">
-      <div class="cl-header"><span class="cl-badge new">جديد</span><span class="cl-title">مسح الباركود بالكاميرا</span></div>
-      <div class="cl-desc">يفتح كاميرا النظام على Android ويلتقط صورة، ثم مكتبة <code>jsqr</code> تحلل الرمز مباشرة — بدون تطبيق خارجي.</div>
-    </div>
-    <div class="cl-card new">
-      <div class="cl-header"><span class="cl-badge new">جديد</span><span class="cl-title">مسح الباركود من صورة</span></div>
-      <div class="cl-desc">اختر أي صورة من معرض هاتفك تحتوي على باركود أو QR وسيتعرف عليه تلقائياً.</div>
-    </div>
-    <div class="cl-card new">
-      <div class="cl-header"><span class="cl-badge new">جديد</span><span class="cl-title">طباعة الفاتورة PNG</span></div>
-      <div class="cl-desc">الفاتورة تتحول إلى صورة PNG عالية الدقة ثم تُشارك مع تطبيقات الطباعة وGoogle Drive وWhatsApp.</div>
-    </div>
-    <div class="cl-card new">
-      <div class="cl-header"><span class="cl-badge new">جديد</span><span class="cl-title">إعادة طباعة الفواتير</span></div>
-      <div class="cl-desc">زر "طباعة" في كل فاتورة بقائمة المبيعات يفتح معاينة كاملة مع خياري طباعة وحفظ PNG.</div>
-    </div>
-    <div class="cl-card new">
-      <div class="cl-header"><span class="cl-badge new">جديد</span><span class="cl-title">شاشة الخطأ وزر الإنعاش</span></div>
-      <div class="cl-desc">عند أي crash تظهر شاشة واضحة مع زر "إنعاش التطبيق" بدلاً من شاشة بيضاء فارغة.</div>
+      <div class="cl-header"><span class="cl-badge fix">إصلاح</span><span class="cl-title">نافذة الكاميرا شفافة</span></div>
+      <div class="cl-desc">خلفية سوداء صلبة (<code>#000000</code>) بدلاً من <code>bg-black/92</code> لضمان وضوح واجهة المسح.</div>
     </div>
     <div class="cl-card fix">
-      <div class="cl-header"><span class="cl-badge fix">إصلاح</span><span class="cl-title">الروابط الخارجية</span></div>
-      <div class="cl-desc">روابط GitHub في الإعدادات تفتح الآن في المتصفح الخارجي بدلاً من داخل التطبيق.</div>
+      <div class="cl-header"><span class="cl-badge fix">إصلاح</span><span class="cl-title">الآلة الحاسبة تكتب الرقم مرتين</span></div>
+      <div class="cl-desc">استبدال <code>onClick</code> + <code>onTouchStart</code> بـ <code>onPointerDown</code> مع <code>preventDefault()</code>.</div>
+    </div>
+    <div class="cl-card fix">
+      <div class="cl-header"><span class="cl-badge fix">إصلاح</span><span class="cl-title">حفظ الصورة على Android 10+</span></div>
+      <div class="cl-desc">استخدام <code>Directory.Cache</code> + <code>Share.share</code> بدلاً من <code>ExternalStorage</code> المقيد.</div>
     </div>
     <div class="cl-card new">
-      <div class="cl-header"><span class="cl-badge new">جديد</span><span class="cl-title">تحسينات عامة</span></div>
-      <div class="cl-desc">زر رجوع Android، أيقونة كاميرا في بحث المخزون، تقليص الشريط العلوي للهاتف.</div>
+      <div class="cl-header"><span class="cl-badge new">جديد</span><span class="cl-title">باركود Code 128 بدلاً من QR</span></div>
+      <div class="cl-desc">الفاتورة الآن تحمل باركود Code 128 برقم تسلسلي <code>MTJR-XXXXXX</code> — أسرع في المسح وأخف وزناً.</div>
+    </div>
+    <div class="cl-card new">
+      <div class="cl-header"><span class="cl-badge new">جديد</span><span class="cl-title">مكوّن InvoiceBarcode مخصص</span></div>
+      <div class="cl-desc">توليد باركود SVG مباشرة بدون مكتبات خارجية، يعمل على Android والحاسوب.</div>
+    </div>
+    <div class="cl-card fix">
+      <div class="cl-header"><span class="cl-badge fix">إصلاح</span><span class="cl-title">رابط GitHub في الإعدادات</span></div>
+      <div class="cl-desc">إضافة <code>import { openExternalLink }</code> المفقود لفتح الروابط في المتصفح الخارجي.</div>
+    </div>
+    <div class="cl-card new">
+      <div class="cl-header"><span class="cl-badge new">جديد</span><span class="cl-title">سكريبت بناء آلي</span></div>
+      <div class="cl-desc">إضافة <code>build-apk.sh</code> لبناء APK خطوة بخطوة مع التحقق من الأخطاء وتقرير مفصل.</div>
+    </div>
+    <div class="cl-card enhance">
+      <div class="cl-header"><span class="cl-badge enhance">تحسين</span><span class="cl-title">معاينة الفاتورة والطباعة</span></div>
+      <div class="cl-desc">تضمين الباركود كـ SVG نصي مباشرة في HTML المُولَّد بدون الحاجة لالتقاط DOM.</div>
+    </div>
+  </div>
+</section>
+
+<!-- BARCODE PREVIEW SECTION -->
+<section style="padding-top:0">
+  <div style="max-width:500px;margin:0 auto">
+    <div class="barcode-preview">
+      <div class="barcode-demo">
+        <svg width="280" height="80" viewBox="0 0 280 80" style="background:#fff">
+          <rect x="0" y="0" width="280" height="80" fill="white"/>
+          <rect x="20" y="20" width="2" height="40" fill="black"/>
+          <rect x="24" y="20" width="4" height="40" fill="black"/>
+          <rect x="30" y="20" width="2" height="40" fill="black"/>
+          <rect x="34" y="20" width="3" height="40" fill="black"/>
+          <rect x="39" y="20" width="2" height="40" fill="black"/>
+          <rect x="43" y="20" width="4" height="40" fill="black"/>
+          <rect x="49" y="20" width="2" height="40" fill="black"/>
+          <rect x="53" y="20" width="3" height="40" fill="black"/>
+          <text x="140" y="68" text-anchor="middle" font-size="10" fill="#333">MTJR-240301</text>
+        </svg>
+      </div>
+      <div class="barcode-label">باركود Code 128 — الرقم التسلسلي للفاتورة</div>
+      <div class="barcode-serial">MTJR-XXXXXX</div>
     </div>
   </div>
 </section>
@@ -315,14 +349,14 @@
     <p class="section-desc">من بيع المنتجات إلى إدارة الديون وحساب الزكاة — متجري يغطي دورة العمل كاملة.</p>
   </div>
   <div class="features-grid">
-    <div class="feature-card"><div class="feature-icon" style="background:rgba(59,130,246,.1)">🛒</div><div class="feature-title">نقطة بيع متكاملة</div><div class="feature-desc">مسح باركود، سلة مبيعات، خصومات، طرق دفع متعددة، طباعة فواتير مع QR.</div></div>
+    <div class="feature-card"><div class="feature-icon" style="background:rgba(59,130,246,.1)">🛒</div><div class="feature-title">نقطة بيع متكاملة</div><div class="feature-desc">مسح باركود، سلة مبيعات، خصومات، طرق دفع متعددة، طباعة فاتورة مع باركود Code 128.</div></div>
     <div class="feature-card"><div class="feature-icon" style="background:rgba(16,185,129,.1)">📦</div><div class="feature-title">إدارة المخزون</div><div class="feature-desc">إضافة وتعديل المنتجات، جلب معلومات تلقائي عبر الباركود، تنبيهات المخزون المنخفض.</div></div>
     <div class="feature-card"><div class="feature-icon" style="background:rgba(245,158,11,.1)">👥</div><div class="feature-title">إدارة الزبائن</div><div class="feature-desc">نقاط الولاء، سجل المشتريات، القسائم، إحصائيات الزيارات.</div></div>
     <div class="feature-card"><div class="feature-icon" style="background:rgba(239,68,68,.1)">💳</div><div class="feature-title">تتبع الديون</div><div class="feature-desc">ديون الزبائن، دفعات جزئية، تنبيهات التأخر، سجل كامل للمدفوعات.</div></div>
     <div class="feature-card"><div class="feature-icon" style="background:rgba(139,92,246,.1)">⭐</div><div class="feature-title">حاسبة الزكاة</div><div class="feature-desc">حساب زكاة المال حسب المذاهب الأربعة، نصاب ذهب وفضة، تذكير الحول.</div></div>
     <div class="feature-card"><div class="feature-icon" style="background:rgba(6,182,212,.1)">📊</div><div class="feature-title">لوحة التحكم</div><div class="feature-desc">إحصائيات المبيعات اليومية والأسبوعية، رسوم بيانية، أكثر المنتجات مبيعاً.</div></div>
     <div class="feature-card"><div class="feature-icon" style="background:rgba(34,197,94,.1)">🚚</div><div class="feature-title">إدارة الموردين</div><div class="feature-desc">سجل الموردين، ربطهم بالمنتجات، معلومات التواصل.</div></div>
-    <div class="feature-card"><div class="feature-icon" style="background:rgba(249,115,22,.1)">🔍</div><div class="feature-title">البحث الشامل</div><div class="feature-desc">البحث في المبيعات، مسح QR لفتح فاتورة، إعادة طباعة، معالجة المرتجعات.</div></div>
+    <div class="feature-card"><div class="feature-icon" style="background:rgba(249,115,22,.1)">🔍</div><div class="feature-title">البحث الشامل</div><div class="feature-desc">البحث في المبيعات، مسح باركود لفتح فاتورة، إعادة طباعة، معالجة المرتجعات.</div></div>
     <div class="feature-card"><div class="feature-icon" style="background:rgba(99,102,241,.1)">⚙️</div><div class="feature-title">صلاحيات متعددة</div><div class="feature-desc">مدير وبائعون، قفل بكلمة مرور، جلسات العمل، سجل العمليات.</div></div>
   </div>
 </section>
@@ -335,14 +369,16 @@
     <p class="section-desc">المشروع في تطور مستمر — شاركنا في بناء أفضل نظام POS مفتوح المصدر بالعربية.</p>
   </div>
   <div class="roadmap-grid">
-    <div class="roadmap-item"><div class="roadmap-dot done">✓</div><div class="roadmap-content"><div class="roadmap-title"><span class="badge-done">مكتمل</span>نقطة البيع الكاملة</div><div class="roadmap-desc">سلة مبيعات، باركود، خصومات، فاتورة QR، طباعة حرارية.</div></div></div>
+    <div class="roadmap-item"><div class="roadmap-dot done">✓</div><div class="roadmap-content"><div class="roadmap-title"><span class="badge-done">مكتمل</span>نقطة البيع الكاملة</div><div class="roadmap-desc">سلة مبيعات، باركود، خصومات، فاتورة باركود Code 128، طباعة حرارية.</div></div></div>
     <div class="roadmap-item"><div class="roadmap-dot done">✓</div><div class="roadmap-content"><div class="roadmap-title"><span class="badge-done">مكتمل</span>إدارة المخزون والموردين</div><div class="roadmap-desc">جلب بيانات المنتجات تلقائياً من الإنترنت عبر الباركود.</div></div></div>
     <div class="roadmap-item"><div class="roadmap-dot done">✓</div><div class="roadmap-content"><div class="roadmap-title"><span class="badge-done">مكتمل</span>الديون والزكاة</div><div class="roadmap-desc">تتبع الديون بالدفعات الجزئية، وحاسبة الزكاة بالمذاهب الأربعة.</div></div></div>
     <div class="roadmap-item"><div class="roadmap-dot done">✓</div><div class="roadmap-content"><div class="roadmap-title"><span class="badge-done">مكتمل</span>دعم GNU/Linux وAndroid</div><div class="roadmap-desc">GNU/Linux AppImage + Android APK في مشروع واحد.</div></div></div>
     <div class="roadmap-item"><div class="roadmap-dot done">✓</div><div class="roadmap-content"><div class="roadmap-title"><span class="badge-done">مكتمل</span>ثلاث لغات كاملة</div><div class="roadmap-desc">العربية والإنجليزية والفرنسية — 443 مفتاح ترجمة لكل لغة.</div></div></div>
-    <div class="roadmap-item"><div class="roadmap-dot done">✓</div><div class="roadmap-content"><div class="roadmap-title"><span class="badge-done">مكتمل</span>مسح الباركود من صورة</div><div class="roadmap-desc">التقاط صورة أو اختيارها من المعرض ثم قراءة الرمز تلقائياً.</div></div></div>
+    <div class="roadmap-item"><div class="roadmap-dot done">✓</div><div class="roadmap-content"><div class="roadmap-title"><span class="badge-done">مكتمل</span>مسح الباركود من صورة وكاميرا</div><div class="roadmap-desc">التقاط صورة أو اختيارها من المعرض ثم قراءة الرمز تلقائياً.</div></div></div>
     <div class="roadmap-item"><div class="roadmap-dot done">✓</div><div class="roadmap-content"><div class="roadmap-title"><span class="badge-done">مكتمل</span>طباعة الفاتورة كصورة PNG</div><div class="roadmap-desc">مشاركة الفاتورة كصورة مع تطبيقات الطباعة والتواصل الاجتماعي.</div></div></div>
-    <div class="roadmap-item"><div class="roadmap-dot wip">⟳</div><div class="roadmap-content"><div class="roadmap-title"><span class="badge-wip">جارٍ العمل</span>صلاحيات الكاميرا والتخزين</div><div class="roadmap-desc">إظهار قائمة الصلاحيات في إعدادات النظام بشكل صحيح.</div></div></div>
+    <div class="roadmap-item"><div class="roadmap-dot done">✓</div><div class="roadmap-content"><div class="roadmap-title"><span class="badge-done">مكتمل</span>باركود Code 128 بدلاً من QR</div><div class="roadmap-desc">تحول كامل إلى باركود أفقي برقم تسلسلي موحد للفاتورة.</div></div></div>
+    <div class="roadmap-item"><div class="roadmap-dot wip">⟳</div><div class="roadmap-content"><div class="roadmap-title"><span class="badge-wip">جارٍ العمل</span>تحسين حفظ وطباعة الفاتورة</div><div class="roadmap-desc">ضبط مشاكل الطباعة على الهاتف والحاسوب، تحسين جودة الصورة.</div></div></div>
+    <div class="roadmap-item"><div class="roadmap-dot wip">⟳</div><div class="roadmap-content"><div class="roadmap-title"><span class="badge-wip">جارٍ العمل</span>إصلاح رمز استجابة الفاتورة</div><div class="roadmap-desc">تحسين توافق الباركود مع جميع أجهزة المسح، دعم صيغ إضافية.</div></div></div>
     <div class="roadmap-item"><div class="roadmap-dot todo">○</div><div class="roadmap-content"><div class="roadmap-title"><span class="badge-soon">قريباً</span>فواتير وديون الموردين</div><div class="roadmap-desc">تسجيل فواتير الشراء وديون الموردين مع صور الفواتير الورقية.</div></div></div>
     <div class="roadmap-item"><div class="roadmap-dot todo">○</div><div class="roadmap-content"><div class="roadmap-title"><span class="badge-soon">قريباً</span>نسخة Windows</div><div class="roadmap-desc">حزمة .exe قابلة للتثبيت على نظام Windows.</div></div></div>
     <div class="roadmap-item"><div class="roadmap-dot todo">○</div><div class="roadmap-content"><div class="roadmap-title"><span class="badge-soon">قريباً</span>تزامن عبر الشبكة المحلية</div><div class="roadmap-desc">مزامنة البيانات بين أجهزة متعددة في نفس المتجر دون إنترنت.</div></div></div>
@@ -359,7 +395,7 @@
     <div class="tech-chip">React 18</div><div class="tech-chip">TypeScript</div><div class="tech-chip">Vite 5</div>
     <div class="tech-chip">Tailwind CSS</div><div class="tech-chip">Electron 28</div><div class="tech-chip">Capacitor 6</div>
     <div class="tech-chip">Recharts</div><div class="tech-chip">html5-qrcode</div><div class="tech-chip">jsqr</div>
-    <div class="tech-chip">html2canvas</div><div class="tech-chip">QRCode.react</div><div class="tech-chip">GPL v3.0</div>
+    <div class="tech-chip">html2canvas</div><div class="tech-chip">jsbarcode</div><div class="tech-chip">GPL v3.0</div>
   </div>
 </section>
 
@@ -369,16 +405,16 @@
   <h2>ابدأ اليوم مجاناً</h2>
   <p class="section-desc">متجري مجاني ومفتوح المصدر — متوفر على GNU/Linux وAndroid.</p>
   <div class="download-cards">
-    <a href="https://github.com/SalehGNUTUX/matjari/releases/download/Matjari-2.9.1/Matjari-app-2.9.1.apk" class="download-card">
+    <a href="https://github.com/SalehGNUTUX/matjari/releases/download/Matjari-2.9.2-beta/Matjari-app-2.9.2.apk" class="download-card">
       <div class="download-card-icon">📱</div>
       <div class="download-card-title">Android APK</div>
-      <div class="download-card-size">v2.9.1 Beta</div>
+      <div class="download-card-size">v2.9.2 Beta</div>
       <div class="download-card-platform">Android 7.0+</div>
     </a>
-    <a href="https://github.com/SalehGNUTUX/matjari/releases/download/Matjari-2.9.1/Matjari-2.9.1-x86_64.AppImage" class="download-card">
+    <a href="https://github.com/SalehGNUTUX/matjari/releases/download/Matjari-2.9.2-beta/Matjari-2.9.2-x86_64.AppImage" class="download-card">
       <div class="download-card-icon">🐧</div>
       <div class="download-card-title">Linux AppImage</div>
-      <div class="download-card-size">v2.9.1 Beta</div>
+      <div class="download-card-size">v2.9.2 Beta</div>
       <div class="download-card-platform">x86_64 — كل توزيعات GNU/Linux</div>
     </a>
     <a href="https://github.com/SalehGNUTUX/matjari" class="download-card">
