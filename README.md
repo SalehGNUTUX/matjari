@@ -1,5 +1,5 @@
 <div align="center">
-  <img src="https://github.com/SalehGNUTUX/matjari/blob/main/Matjari-icon.png?raw=true" alt="Matjari POS Logo" width="512" height="512">
+  <img src="https://github.com/SalehGNUTUX/matjari/blob/main/Matjari-icon.png?raw=true" alt="Matjari POS Logo" width="256" height="256">
 </div>
 
 # متجري | MATJARI POS
