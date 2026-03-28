@@ -196,19 +196,19 @@
       <a href="#features" class="nav-link">المميزات</a>
       <a href="#roadmap" class="nav-link">خارطة الطريق</a>
       <a href="https://github.com/SalehGNUTUX/matjari" target="_blank" rel="noopener" class="nav-link">GitHub</a>
-      <a href="https://github.com/SalehGNUTUX/matjari/releases/tag/Matjari-2.9.2-beta" target="_blank" rel="noopener" class="nav-btn">تحميل v2.9.2</a>
+      <a href="https://github.com/SalehGNUTUX/matjari/releases/tag/Matjari-2.9.3-beta" target="_blank" rel="noopener" class="nav-btn">تحميل v2.9.3</a>
     </div>
   </div>
 </nav>
 
 <!-- HERO -->
 <section class="hero">
-  <div class="hero-badge"><span class="hero-badge-dot"></span>الإصدار 2.9.2 Beta — أكثر استقرار و مزايا أكبر</div>
+  <div class="hero-badge"><span class="hero-badge-dot"></span>الإصدار 2.9.3 Beta — أكثر استقرار و مزايا أكبر</div>
   <h1>نقطة بيع ذكية<br><span class="accent">لكل متجر</span></h1>
   <p class="hero-sub">برنامج مفتوح المصدر لإدارة المبيعات، يعمل على <strong>GNU/Linux</strong> و<strong>Android</strong> — بدون اشتراك، بدون سحابة، بياناتك ملكك.</p>
   <div class="hero-actions">
-    <a href="https://github.com/SalehGNUTUX/matjari/releases/download/Matjari-2.9.2-beta/Matjari-2.9.2-beta.apk" class="btn-primary">📱 تحميل APK Android</a>
-    <a href="https://github.com/SalehGNUTUX/matjari/releases/download/Matjari-2.9.2-beta/Matjari-2.9.2-beta-x86_64.AppImage" class="btn-outline">🐧 تحميل Linux AppImage</a>
+    <a href="https://github.com/SalehGNUTUX/matjari/releases/download/Matjari-2.9.3-beta/Matjari-2.9.3-beta.apk" class="btn-primary">📱 تحميل APK Android</a>
+    <a href="https://github.com/SalehGNUTUX/matjari/releases/download/Matjari-2.9.3-beta/Matjari-2.9.3-x86_64.AppImage" class="btn-outline">🐧 تحميل Linux AppImage</a>
   </div>
   <div class="hero-stats">
     <div class="stat"><span class="stat-num">9</span><span class="stat-label">أقسام متكاملة</span></div>
@@ -231,42 +231,42 @@
 <!-- CHANGELOG -->
 <section id="changelog" class="changelog-section">
   <div class="section-center">
-    <div class="section-tag">جديد في v2.9.2</div>
+    <div class="section-tag">جديد في v2.9.3</div>
     <h2>ما الذي تغيَّر؟</h2>
-    <p class="section-desc">إصلاحات جوهرية ومزايا جديدة لتجربة أكثر سلاسة</p>
+    <p class="section-desc">إصلاحات جوهرية، نظام مرتجعات شامل، وتحسينات عميقة</p>
   </div>
   <div class="changelog-grid" style="max-width:900px;margin:0 auto">
     <div class="cl-card fix">
-      <div class="cl-header"><span class="cl-badge fix">إصلاح</span><span class="cl-title">نافذة الكاميرا/الصورة/الإدخال اليدوي شفافة</span></div>
-      <div class="cl-desc">خلفية سوداء صلبة <code>#000000</code> بدلاً من <code>bg-black/92</code> مع <code>z-index</code> أعلى لمنع تداخل المحتوى.</div>
+      <div class="cl-header"><span class="cl-badge fix">إصلاح</span><span class="cl-title">نظام المرتجعات — إصلاح شامل</span></div>
+      <div class="cl-desc">تتبع الكميات المرتجعة مسبقاً، منع إرجاع نفس المنتج مرتين، دمج المرتجعات الجزئية تدريجياً مع حساب المبلغ المسترد تلقائياً.</div>
     </div>
     <div class="cl-card fix">
-      <div class="cl-header"><span class="cl-badge fix">إصلاح</span><span class="cl-title">الآلة الحاسبة تكتب الرقم مرتين على الهاتف</span></div>
-      <div class="cl-desc">استبدال <code>onClick</code> + <code>onTouchStart</code> بـ <code>onPointerDown</code> مع <code>preventDefault()</code> للقضاء على الحدث المزدوج عند اللمس.</div>
+      <div class="cl-header"><span class="cl-badge fix">إصلاح</span><span class="cl-title">الديون لا تُستعاد عند رفع النسخة الاحتياطية</span></div>
+      <div class="cl-desc">كلا زرّي التصدير في لوحة التحكم والإعدادات يتضمنان الآن حقل <code>debts</code> كاملاً ضمن النسخة الاحتياطية.</div>
     </div>
     <div class="cl-card fix">
-      <div class="cl-header"><span class="cl-badge fix">إصلاح</span><span class="cl-title">حفظ الصورة لا يعمل على Android 10+</span></div>
-      <div class="cl-desc">الانتقال من <code>Directory.ExternalStorage</code> إلى <code>Directory.Cache</code> + <code>Share.share</code> الذي يعرض واجهة الحفظ الأصلية.</div>
-    </div>
-    <div class="cl-card new">
-      <div class="cl-header"><span class="cl-badge new">جديد</span><span class="cl-title">QR تسلسلي للفاتورة</span></div>
-      <div class="cl-desc">الفاتورة تحمل QR مربع بالرقم التسلسلي فقط (<code>MTJR-XXXXXX</code>) — أسرع في المسح وأخف وزناً.</div>
-    </div>
-    <div class="cl-card new">
-      <div class="cl-header"><span class="cl-badge new">جديد</span><span class="cl-title">إضافة مورد سريع من داخل المخزون</span></div>
-      <div class="cl-desc">زر "مورد جديد" بجانب حقل المورد في نافذة إضافة المنتج — يُدخل الاسم ونوع السلعة والهاتف فوراً دون مغادرة الصفحة.</div>
-    </div>
-    <div class="cl-card new">
-      <div class="cl-header"><span class="cl-badge new">جديد</span><span class="cl-title">تصوير المنتج مباشرة من نافذة الإضافة</span></div>
-      <div class="cl-desc">زر كاميرا مدمج على صورة المنتج — يفتح الكاميرا الأصلية على Android ويضغط الصورة تلقائياً.</div>
+      <div class="cl-header"><span class="cl-badge fix">إصلاح</span><span class="cl-title">قائمة الفئات تحجب لوحة المفاتيح على الهاتف</span></div>
+      <div class="cl-desc">استُبدل <code>&lt;datalist&gt;</code> بقائمة منسدلة يدوية تفتح فقط عند النقر على زر السهم — لا تتدخل مع الكتابة.</div>
     </div>
     <div class="cl-card fix">
-      <div class="cl-header"><span class="cl-badge fix">إصلاح</span><span class="cl-title">الفاتورة تفتح داخل التطبيق بلا طريقة للرجوع</span></div>
-      <div class="cl-desc">مشاركة الفاتورة كـ PNG عبر <code>Share.share</code> بدلاً من HTML — Android يفتحها في تطبيق الصور أو تطبيقات الطباعة الخارجية.</div>
+      <div class="cl-header"><span class="cl-badge fix">إصلاح</span><span class="cl-title">البحث عن المنتج يتجاهل القاعدة المحلية</span></div>
+      <div class="cl-desc">البحث يتحقق أولاً من المخزون المحلي، وإن لم يجد يبحث خارجياً مع <code>retry ×2</code> وmهلة 8 ثوانٍ لكل مصدر.</div>
     </div>
     <div class="cl-card new">
-      <div class="cl-header"><span class="cl-badge new">جديد</span><span class="cl-title">تسمية ملفات الفاتورة بالرقم التسلسلي</span></div>
-      <div class="cl-desc">اسم ملف الفاتورة المحفوظة يحمل نفس رقم الفاتورة: <code>فاتورة_MTJR-XXXXXX.png</code> لسهولة البحث.</div>
+      <div class="cl-header"><span class="cl-badge new">جديد</span><span class="cl-title">تعديل الديون</span></div>
+      <div class="cl-desc">زر تعديل لكل دين يفتح نافذة كاملة للمبلغ وتاريخ الاستحقاق والهاتف والملاحظات دون المساس بالدفعات السابقة.</div>
+    </div>
+    <div class="cl-card new">
+      <div class="cl-header"><span class="cl-badge new">جديد</span><span class="cl-title">المبلغ المسترد في المرتجعات</span></div>
+      <div class="cl-desc">يظهر المبلغ المسترد لكل صنف لحظياً عند التحديد، والإجمالي قبل التأكيد، ويُحفظ في بيانات الفاتورة للرجوع إليه.</div>
+    </div>
+    <div class="cl-card fix">
+      <div class="cl-header"><span class="cl-badge fix">إصلاح</span><span class="cl-title">ترتيب حقول الزكاة مقلوب</span></div>
+      <div class="cl-desc">"ديون لي ✚ تُضاف" يسبق الآن "ديون علي ✖ تُطرح" مطابقاً لمعادلة الزكاة الصحيحة: <code>(بضاعة + نقد + ديون لي − ديون علي) × 2.5%</code></div>
+    </div>
+    <div class="cl-card new">
+      <div class="cl-header"><span class="cl-badge new">جديد</span><span class="cl-title">زر نقص الكمية في سلة المنتجات</span></div>
+      <div class="cl-desc">زر <code>−</code> أحمر يظهر فوق بطاقة المنتج فور إضافته للسلة — النقر ينقص كمية واحدة أو يحذف المنتج عند الوصول للصفر.</div>
     </div>
   </div>
 </section>
@@ -389,7 +389,9 @@
     <div class="roadmap-item"><div class="roadmap-dot done">✓</div><div class="roadmap-content"><div class="roadmap-title"><span class="badge-done">مكتمل</span>مسح الباركود من صورة وكاميرا</div><div class="roadmap-desc">التقاط صورة أو اختيارها من المعرض ثم قراءة الرمز تلقائياً (يدعم QR و Code 128 و EAN-13).</div></div></div>
     <div class="roadmap-item"><div class="roadmap-dot done">✓</div><div class="roadmap-content"><div class="roadmap-title"><span class="badge-done">مكتمل</span>طباعة الفاتورة كصورة PNG</div><div class="roadmap-desc">مشاركة الفاتورة كصورة مع تطبيقات الطباعة والتواصل الاجتماعي.</div></div></div>
     <div class="roadmap-item"><div class="roadmap-dot done">✓</div><div class="roadmap-content"><div class="roadmap-title"><span class="badge-done">مكتمل</span>QR تسلسلي للفاتورة</div><div class="roadmap-desc">تحول كامل إلى QR مربع برقم تسلسلي موحد للفاتورة.</div></div></div>
-    <div class="roadmap-item"><div class="roadmap-dot wip">⟳</div><div class="roadmap-content"><div class="roadmap-title"><span class="badge-wip">جارٍ العمل</span>تحسين حفظ وطباعة الفاتورة</div><div class="roadmap-desc">ضبط مشاكل الطباعة على الهاتف والحاسوب، تحسين جودة الصورة.</div></div></div>
+    <div class="roadmap-item"><div class="roadmap-dot done">✓</div><div class="roadmap-content"><div class="roadmap-title"><span class="badge-done">مكتمل</span>نظام مرتجعات شامل</div><div class="roadmap-desc">تتبع الكميات المرتجعة تدريجياً، المبلغ المسترد التلقائي، منع الإرجاع المكرر.</div></div></div>
+    <div class="roadmap-item"><div class="roadmap-dot done">✓</div><div class="roadmap-content"><div class="roadmap-title"><span class="badge-done">مكتمل</span>تعديل الديون ونسخ احتياطي شامل</div><div class="roadmap-desc">تعديل المبلغ والأجل لأي دين، ونسخة احتياطية تشمل جميع الأقسام بما فيها الديون.</div></div></div>
+    <div class="roadmap-item"><div class="roadmap-dot wip">⟳</div><div class="roadmap-content"><div class="roadmap-title"><span class="badge-wip">جارٍ العمل</span>تحسين الطباعة والمزامنة</div><div class="roadmap-desc">ضبط مشاكل الطباعة على الهاتف والحاسوب، تحسين جودة الصورة، تحضير للمزامنة المحلية.</div></div></div>
     <div class="roadmap-item"><div class="roadmap-dot todo">○</div><div class="roadmap-content"><div class="roadmap-title"><span class="badge-soon">قريباً</span>فواتير وديون الموردين</div><div class="roadmap-desc">تسجيل فواتير الشراء وديون الموردين مع صور الفواتير الورقية.</div></div></div>
     <div class="roadmap-item"><div class="roadmap-dot todo">○</div><div class="roadmap-content"><div class="roadmap-title"><span class="badge-soon">قريباً</span>نسخة Windows</div><div class="roadmap-desc">حزمة .exe قابلة للتثبيت على نظام Windows.</div></div></div>
     <div class="roadmap-item"><div class="roadmap-dot todo">○</div><div class="roadmap-content"><div class="roadmap-title"><span class="badge-soon">قريباً</span>تزامن عبر الشبكة المحلية</div><div class="roadmap-desc">مزامنة البيانات بين أجهزة متعددة في نفس المتجر دون إنترنت.</div></div></div>
@@ -416,16 +418,16 @@
   <h2>ابدأ اليوم مجاناً</h2>
   <p class="section-desc">متجري مجاني ومفتوح المصدر — متوفر على GNU/Linux وAndroid.</p>
   <div class="download-cards">
-    <a href="https://github.com/SalehGNUTUX/matjari/releases/download/Matjari-2.9.2-beta/Matjari-2.9.2-beta.apk" class="download-card">
+    <a href="https://github.com/SalehGNUTUX/matjari/releases/download/Matjari-2.9.3-beta/Matjari-2.9.3-beta.apk" class="download-card">
       <div class="download-card-icon">📱</div>
       <div class="download-card-title">Android APK</div>
-      <div class="download-card-size">v2.9.2 Beta</div>
-      <div class="download-card-platform">Android 7.0+</div>
+      <div class="download-card-size">v2.9.3 Beta</div>
+      <div class="download-card-platform">Android 7.0+ · matjari-2.9.3.apk</div>
     </a>
-    <a href="https://github.com/SalehGNUTUX/matjari/releases/download/Matjari-2.9.2-beta/Matjari-2.9.2-beta-x86_64.AppImage" class="download-card">
+    <a href="https://github.com/SalehGNUTUX/matjari/releases/download/Matjari-2.9.3-beta/Matjari-2.9.3-x86_64.AppImage" class="download-card">
       <div class="download-card-icon">🐧</div>
       <div class="download-card-title">Linux AppImage</div>
-      <div class="download-card-size">v2.9.2 Beta</div>
+      <div class="download-card-size">v2.9.3 Beta</div>
       <div class="download-card-platform">x86_64 — كل توزيعات GNU/Linux</div>
     </a>
     <a href="https://github.com/SalehGNUTUX/matjari" class="download-card">
