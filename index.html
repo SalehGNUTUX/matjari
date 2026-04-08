@@ -2,9 +2,9 @@
 <html lang="ar" dir="rtl">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta name="description" content="متجري — نظام نقطة بيع ذكي مفتوح المصدر يعمل على GNU/Linux وAndroid">
-<title>متجري | MATJARI POS</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+<meta name="description" content="متجري — نظام نقطة بيع ذكي مفتوح المصدر مع ماسح ضوئي تلقائي مستمر، يعمل على GNU/Linux و Android">
+<title>متجري | MATJARI POS — ماسح تلقائي وطباعة فائقة الجودة</title>
 <!-- Favicon (أيقونة تبويب المتصفح) -->
 <link rel="icon" type="image/png" href="https://github.com/SalehGNUTUX/matjari/blob/main/Matjari-icon.png?raw=true">
 <link rel="apple-touch-icon" href="https://github.com/SalehGNUTUX/matjari/blob/main/Matjari-icon.png?raw=true">
@@ -157,6 +157,7 @@
   .download-card-title{font-size:16px;font-weight:900;margin-bottom:4px}
   .download-card-size{font-size:13px;opacity:.7}
   .download-card-platform{font-size:12px;opacity:.6;margin-top:6px}
+  .checksum{font-size:10px;font-family:monospace;background:rgba(0,0,0,0.2);border-radius:8px;padding:4px 8px;margin-top:8px;word-break:break-all;display:inline-block}
 
   /* TECH */
   .tech-section{background:var(--bg2)}
@@ -196,22 +197,22 @@
       <a href="#features" class="nav-link">المميزات</a>
       <a href="#roadmap" class="nav-link">خارطة الطريق</a>
       <a href="https://github.com/SalehGNUTUX/matjari" target="_blank" rel="noopener" class="nav-link">GitHub</a>
-      <a href="https://github.com/SalehGNUTUX/matjari/releases/tag/Matjari-2.9.3-beta" target="_blank" rel="noopener" class="nav-btn">تحميل v2.9.3</a>
+      <a href="#download" class="nav-btn">تحميل v2.9.4</a>
     </div>
   </div>
 </nav>
 
 <!-- HERO -->
 <section class="hero">
-  <div class="hero-badge"><span class="hero-badge-dot"></span>الإصدار 2.9.3 Beta — أكثر استقرار و مزايا أكبر</div>
+  <div class="hero-badge"><span class="hero-badge-dot"></span>الإصدار 2.9.4 Beta — ماسح تلقائي مستمر + جودة طباعة فائقة</div>
   <h1>نقطة بيع ذكية<br><span class="accent">لكل متجر</span></h1>
-  <p class="hero-sub">برنامج مفتوح المصدر لإدارة المبيعات، يعمل على <strong>GNU/Linux</strong> و<strong>Android</strong> — بدون اشتراك، بدون سحابة، بياناتك ملكك.</p>
+  <p class="hero-sub">برنامج مفتوح المصدر لإدارة المبيعات، يعمل على <strong>GNU/Linux</strong> و<strong>Android</strong> — بدون اشتراك، بدون سحابة، بياناتك ملكك. الآن مع ماسح باركود تلقائي فوري.</p>
   <div class="hero-actions">
-    <a href="https://github.com/SalehGNUTUX/matjari/releases/download/Matjari-2.9.3-beta/Matjari-2.9.3-beta.apk" class="btn-primary">📱 تحميل APK Android</a>
-    <a href="https://github.com/SalehGNUTUX/matjari/releases/download/Matjari-2.9.3-beta/Matjari-2.9.3-x86_64.AppImage" class="btn-outline">🐧 تحميل Linux AppImage</a>
+    <a href="https://github.com/SalehGNUTUX/matjari/releases/download/matjari-2.9.4-beta/matjari-2.9.4.apk" class="btn-primary">📱 تحميل APK Android</a>
+    <a href="https://github.com/SalehGNUTUX/matjari/releases/download/matjari-2.9.4-beta/Matjari-2.9.4-x86_64.AppImage" class="btn-outline">🐧 تحميل Linux AppImage</a>
   </div>
   <div class="hero-stats">
-    <div class="stat"><span class="stat-num">9</span><span class="stat-label">أقسام متكاملة</span></div>
+    <div class="stat"><span class="stat-num">10+</span><span class="stat-label">أقسام متكاملة</span></div>
     <div class="stat"><span class="stat-num">2</span><span class="stat-label">منصة مدعومة</span></div>
     <div class="stat"><span class="stat-num">443</span><span class="stat-label">مفتاح ترجمة</span></div>
     <div class="stat"><span class="stat-num">3</span><span class="stat-label">لغات</span></div>
@@ -226,59 +227,51 @@
   <div class="platform-chip">🇬🇧 English</div>
   <div class="platform-chip">🇫🇷 Français</div>
   <div class="platform-chip">🔒 GPL v3.0</div>
+  <div class="platform-chip">⚡ Live Scanner</div>
 </div>
 
-<!-- CHANGELOG -->
+<!-- CHANGELOG v2.9.4 -->
 <section id="changelog" class="changelog-section">
   <div class="section-center">
-    <div class="section-tag">جديد في v2.9.3</div>
-    <h2>ما الذي تغيَّر؟</h2>
-    <p class="section-desc">إصلاحات جوهرية، نظام مرتجعات شامل، وتحسينات عميقة</p>
+    <div class="section-tag">مستجدات الإصدار 2.9.4</div>
+    <h2>ماسح تلقائي وطباعة فائقة الجودة</h2>
+    <p class="section-desc">إصلاحات جوهرية وميزات ثورية تجعل تجربة البيع أسرع وأذكى</p>
   </div>
   <div class="changelog-grid" style="max-width:900px;margin:0 auto">
-    <div class="cl-card fix">
-      <div class="cl-header"><span class="cl-badge fix">إصلاح</span><span class="cl-title">نظام المرتجعات — إصلاح شامل</span></div>
-      <div class="cl-desc">تتبع الكميات المرتجعة مسبقاً، منع إرجاع نفس المنتج مرتين، دمج المرتجعات الجزئية تدريجياً مع حساب المبلغ المسترد تلقائياً.</div>
-    </div>
-    <div class="cl-card fix">
-      <div class="cl-header"><span class="cl-badge fix">إصلاح</span><span class="cl-title">الديون لا تُستعاد عند رفع النسخة الاحتياطية</span></div>
-      <div class="cl-desc">كلا زرّي التصدير في لوحة التحكم والإعدادات يتضمنان الآن حقل <code>debts</code> كاملاً ضمن النسخة الاحتياطية.</div>
-    </div>
-    <div class="cl-card fix">
-      <div class="cl-header"><span class="cl-badge fix">إصلاح</span><span class="cl-title">قائمة الفئات تحجب لوحة المفاتيح على الهاتف</span></div>
-      <div class="cl-desc">استُبدل <code>&lt;datalist&gt;</code> بقائمة منسدلة يدوية تفتح فقط عند النقر على زر السهم — لا تتدخل مع الكتابة.</div>
-    </div>
-    <div class="cl-card fix">
-      <div class="cl-header"><span class="cl-badge fix">إصلاح</span><span class="cl-title">البحث عن المنتج يتجاهل القاعدة المحلية</span></div>
-      <div class="cl-desc">البحث يتحقق أولاً من المخزون المحلي، وإن لم يجد يبحث خارجياً مع <code>retry ×2</code> وmهلة 8 ثوانٍ لكل مصدر.</div>
+    <div class="cl-card new">
+      <div class="cl-header"><span class="cl-badge new">ميزة جديدة</span><span class="cl-title">الماسح التلقائي المستمر (Live Scanner)</span></div>
+      <div class="cl-desc">الكاميرا تعمل فور فتح نافذة المسح — 15 إطار/ثانية. بدون أي زر تصوير. عند اكتشاف الرمز: اهتزاز + وميض أخضر + تنفيذ فوري. Overlay احترافي مع إطار L زرقاء وخط ليزر متحرك.</div>
     </div>
     <div class="cl-card new">
-      <div class="cl-header"><span class="cl-badge new">جديد</span><span class="cl-title">تعديل الديون</span></div>
-      <div class="cl-desc">زر تعديل لكل دين يفتح نافذة كاملة للمبلغ وتاريخ الاستحقاق والهاتف والملاحظات دون المساس بالدفعات السابقة.</div>
-    </div>
-    <div class="cl-card new">
-      <div class="cl-header"><span class="cl-badge new">جديد</span><span class="cl-title">المبلغ المسترد في المرتجعات</span></div>
-      <div class="cl-desc">يظهر المبلغ المسترد لكل صنف لحظياً عند التحديد، والإجمالي قبل التأكيد، ويُحفظ في بيانات الفاتورة للرجوع إليه.</div>
+      <div class="cl-header"><span class="cl-badge new">ميزة جديدة</span><span class="cl-title">زر كشاف الضوء (Torch)</span></div>
+      <div class="cl-desc">تشغيل وإطفاء فلاش الكاميرا بنقرة واحدة من شاشة المسح لتحسين القراءة في الإضاءة المنخفضة.</div>
     </div>
     <div class="cl-card fix">
-      <div class="cl-header"><span class="cl-badge fix">إصلاح</span><span class="cl-title">ترتيب حقول الزكاة مقلوب</span></div>
-      <div class="cl-desc">"ديون لي ✚ تُضاف" يسبق الآن "ديون علي ✖ تُطرح" مطابقاً لمعادلة الزكاة الصحيحة: <code>(بضاعة + نقد + ديون لي − ديون علي) × 2.5%</code></div>
+      <div class="cl-header"><span class="cl-badge fix">إصلاح</span><span class="cl-title">جودة صورة الفاتورة منخفضة عند الطباعة</span></div>
+      <div class="cl-desc">رفع دقة التصيير من scale:3 إلى scale:4 مع windowWidth:320 و imageTimeout:5000 — فاتورة واضحة وحادة.</div>
+    </div>
+    <div class="cl-card fix">
+      <div class="cl-header"><span class="cl-badge fix">إصلاح</span><span class="cl-title">الروابط الخارجية تفتح داخل التطبيق</span></div>
+      <div class="cl-desc">تقييد allowNavigation من "*" إلى النطاقات المعتمدة فقط (OpenFoodFacts, allorigins, go-upc) لتحسين الأمان.</div>
+    </div>
+    <div class="cl-card fix">
+      <div class="cl-header"><span class="cl-badge fix">إصلاح</span><span class="cl-title">شاشة الخطأ تمنع العودة</span></div>
+      <div class="cl-desc">ErrorBoundary يعرض الآن زر "← رجوع" لإلغاء الخطأ وزر "🔄 إنعاش" لإعادة التطبيق بالكامل.</div>
     </div>
     <div class="cl-card new">
-      <div class="cl-header"><span class="cl-badge new">جديد</span><span class="cl-title">زر نقص الكمية في سلة المنتجات</span></div>
-      <div class="cl-desc">زر <code>−</code> أحمر يظهر فوق بطاقة المنتج فور إضافته للسلة — النقر ينقص كمية واحدة أو يحذف المنتج عند الوصول للصفر.</div>
+      <div class="cl-header"><span class="cl-badge new">تحسين</span><span class="cl-title">أيقونات التطبيق + سكريبت بناء آلي</span></div>
+      <div class="cl-desc">تحديث شامل للأيقونات الرسمية (icon.png, .ico, .icns) وإضافة build-apk.sh الذي يبني APK بخطوات آلية وتقرير ملون.</div>
     </div>
   </div>
 </section>
 
-<!-- QR PREVIEW SECTION -->
+<!-- QR PREVIEW SECTION (ماسح ضوئي توضيحي) -->
 <section style="padding-top:0">
   <div style="max-width:500px;margin:0 auto">
     <div class="qr-preview">
       <div class="qr-demo">
         <svg width="120" height="120" viewBox="0 0 120 120" style="background:#fff">
           <rect width="120" height="120" fill="white"/>
-          <!-- QR Code simulation (مربعات سوداء وبيضاء) -->
           <rect x="20" y="20" width="10" height="10" fill="black"/>
           <rect x="35" y="20" width="10" height="10" fill="black"/>
           <rect x="50" y="20" width="10" height="10" fill="black"/>
@@ -304,12 +297,12 @@
   </div>
 </section>
 
-<!-- PREVIEW -->
+<!-- PREVIEW (واجهة) -->
 <section class="preview-section">
   <div style="max-width:1100px;margin:0 auto">
     <div class="section-center">
       <div class="section-tag">معاينة التطبيق</div>
-      <h2>واجهة احترافية<br>تعمل بسلاسة</h2>
+      <h2>واجهة احترافية<br>مع ماسح فوري</h2>
     </div>
     <div class="preview-window">
       <div class="preview-titlebar">
@@ -318,14 +311,14 @@
           <div class="title-dot" style="background:#f59e0b"></div>
           <div class="title-dot" style="background:#22c55e"></div>
         </div>
-        <span class="title-bar-text">MATJARI | متجري — نقطة البيع</span>
+        <span class="title-bar-text">MATJARI | متجري — نقطة البيع (الماسح التلقائي)</span>
       </div>
       <div class="preview-content">
         <div class="mock-pos">
           <div>
             <div class="mock-search">
               <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" style="opacity:.4"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
-              <span class="mock-search-text">ابحث باسم السلعة أو الباركود...</span>
+              <span class="mock-search-text">ابحث باسم السلعة أو الباركود (أو وجّه الكاميرا للمسح التلقائي)</span>
             </div>
             <div class="mock-products">
               <div class="mock-product"><div class="mock-product-img">🐱</div><div class="mock-product-name">طعام قطط</div><div class="mock-product-price">MAD 22</div></div>
@@ -361,7 +354,7 @@
     <p class="section-desc">من بيع المنتجات إلى إدارة الديون وحساب الزكاة — متجري يغطي دورة العمل كاملة.</p>
   </div>
   <div class="features-grid">
-    <div class="feature-card"><div class="feature-icon" style="background:rgba(59,130,246,.1)">🛒</div><div class="feature-title">نقطة بيع متكاملة</div><div class="feature-desc">مسح باركود، سلة مبيعات، خصومات، طرق دفع متعددة، طباعة فاتورة مع QR تسلسلي.</div></div>
+    <div class="feature-card"><div class="feature-icon" style="background:rgba(59,130,246,.1)">🛒</div><div class="feature-title">نقطة بيع متكاملة</div><div class="feature-desc">مسح باركود تلقائي مستمر، سلة مبيعات، خصومات، طرق دفع متعددة، طباعة فاتورة مع QR تسلسلي.</div></div>
     <div class="feature-card"><div class="feature-icon" style="background:rgba(16,185,129,.1)">📦</div><div class="feature-title">إدارة المخزون</div><div class="feature-desc">إضافة وتعديل المنتجات، جلب معلومات تلقائي عبر الباركود، تصوير المنتج، إضافة مورد سريع.</div></div>
     <div class="feature-card"><div class="feature-icon" style="background:rgba(245,158,11,.1)">👥</div><div class="feature-title">إدارة الزبائن</div><div class="feature-desc">نقاط الولاء، سجل المشتريات، القسائم، إحصائيات الزيارات.</div></div>
     <div class="feature-card"><div class="feature-icon" style="background:rgba(239,68,68,.1)">💳</div><div class="feature-title">تتبع الديون</div><div class="feature-desc">ديون الزبائن، دفعات جزئية، تنبيهات التأخر، سجل كامل للمدفوعات.</div></div>
@@ -373,7 +366,7 @@
   </div>
 </section>
 
-<!-- ROADMAP -->
+<!-- ROADMAP (محدث) -->
 <section id="roadmap" style="background:var(--bg)">
   <div class="section-center">
     <div class="section-tag">خارطة الطريق</div>
@@ -381,20 +374,12 @@
     <p class="section-desc">المشروع في تطور مستمر — شاركنا في بناء أفضل نظام POS مفتوح المصدر بالعربية.</p>
   </div>
   <div class="roadmap-grid">
-    <div class="roadmap-item"><div class="roadmap-dot done">✓</div><div class="roadmap-content"><div class="roadmap-title"><span class="badge-done">مكتمل</span>نقطة البيع الكاملة</div><div class="roadmap-desc">سلة مبيعات، باركود، خصومات، فاتورة QR تسلسلي، طباعة حرارية.</div></div></div>
-    <div class="roadmap-item"><div class="roadmap-dot done">✓</div><div class="roadmap-content"><div class="roadmap-title"><span class="badge-done">مكتمل</span>إدارة المخزون والموردين</div><div class="roadmap-desc">جلب بيانات المنتجات تلقائياً من الإنترنت عبر الباركود، إضافة مورد سريع.</div></div></div>
-    <div class="roadmap-item"><div class="roadmap-dot done">✓</div><div class="roadmap-content"><div class="roadmap-title"><span class="badge-done">مكتمل</span>الديون والزكاة</div><div class="roadmap-desc">تتبع الديون بالدفعات الجزئية، وحاسبة الزكاة بالمذاهب الأربعة.</div></div></div>
-    <div class="roadmap-item"><div class="roadmap-dot done">✓</div><div class="roadmap-content"><div class="roadmap-title"><span class="badge-done">مكتمل</span>دعم GNU/Linux وAndroid</div><div class="roadmap-desc">GNU/Linux AppImage + Android APK في مشروع واحد.</div></div></div>
-    <div class="roadmap-item"><div class="roadmap-dot done">✓</div><div class="roadmap-content"><div class="roadmap-title"><span class="badge-done">مكتمل</span>ثلاث لغات كاملة</div><div class="roadmap-desc">العربية والإنجليزية والفرنسية — 443 مفتاح ترجمة لكل لغة.</div></div></div>
-    <div class="roadmap-item"><div class="roadmap-dot done">✓</div><div class="roadmap-content"><div class="roadmap-title"><span class="badge-done">مكتمل</span>مسح الباركود من صورة وكاميرا</div><div class="roadmap-desc">التقاط صورة أو اختيارها من المعرض ثم قراءة الرمز تلقائياً (يدعم QR و Code 128 و EAN-13).</div></div></div>
-    <div class="roadmap-item"><div class="roadmap-dot done">✓</div><div class="roadmap-content"><div class="roadmap-title"><span class="badge-done">مكتمل</span>طباعة الفاتورة كصورة PNG</div><div class="roadmap-desc">مشاركة الفاتورة كصورة مع تطبيقات الطباعة والتواصل الاجتماعي.</div></div></div>
-    <div class="roadmap-item"><div class="roadmap-dot done">✓</div><div class="roadmap-content"><div class="roadmap-title"><span class="badge-done">مكتمل</span>QR تسلسلي للفاتورة</div><div class="roadmap-desc">تحول كامل إلى QR مربع برقم تسلسلي موحد للفاتورة.</div></div></div>
-    <div class="roadmap-item"><div class="roadmap-dot done">✓</div><div class="roadmap-content"><div class="roadmap-title"><span class="badge-done">مكتمل</span>نظام مرتجعات شامل</div><div class="roadmap-desc">تتبع الكميات المرتجعة تدريجياً، المبلغ المسترد التلقائي، منع الإرجاع المكرر.</div></div></div>
-    <div class="roadmap-item"><div class="roadmap-dot done">✓</div><div class="roadmap-content"><div class="roadmap-title"><span class="badge-done">مكتمل</span>تعديل الديون ونسخ احتياطي شامل</div><div class="roadmap-desc">تعديل المبلغ والأجل لأي دين، ونسخة احتياطية تشمل جميع الأقسام بما فيها الديون.</div></div></div>
-    <div class="roadmap-item"><div class="roadmap-dot wip">⟳</div><div class="roadmap-content"><div class="roadmap-title"><span class="badge-wip">جارٍ العمل</span>تحسين الطباعة والمزامنة</div><div class="roadmap-desc">ضبط مشاكل الطباعة على الهاتف والحاسوب، تحسين جودة الصورة، تحضير للمزامنة المحلية.</div></div></div>
-    <div class="roadmap-item"><div class="roadmap-dot todo">○</div><div class="roadmap-content"><div class="roadmap-title"><span class="badge-soon">قريباً</span>فواتير وديون الموردين</div><div class="roadmap-desc">تسجيل فواتير الشراء وديون الموردين مع صور الفواتير الورقية.</div></div></div>
-    <div class="roadmap-item"><div class="roadmap-dot todo">○</div><div class="roadmap-content"><div class="roadmap-title"><span class="badge-soon">قريباً</span>نسخة Windows</div><div class="roadmap-desc">حزمة .exe قابلة للتثبيت على نظام Windows.</div></div></div>
-    <div class="roadmap-item"><div class="roadmap-dot todo">○</div><div class="roadmap-content"><div class="roadmap-title"><span class="badge-soon">قريباً</span>تزامن عبر الشبكة المحلية</div><div class="roadmap-desc">مزامنة البيانات بين أجهزة متعددة في نفس المتجر دون إنترنت.</div></div></div>
+    <div class="roadmap-item"><div class="roadmap-dot done">✓</div><div class="roadmap-content"><div class="roadmap-title"><span class="badge-done">مكتمل</span>الماسح التلقائي المستمر (Live Scanner v2.9.4)</div><div class="roadmap-desc">مسح بدون زر، تغذية راجعة بالاهتزاز، فلاش يدوي، إطار احترافي.</div></div></div>
+    <div class="roadmap-item"><div class="roadmap-dot done">✓</div><div class="roadmap-content"><div class="roadmap-title"><span class="badge-done">مكتمل</span>طباعة فائقة الجودة + تقييد الأمان</div><div class="roadmap-desc">scale:4 مع timeout محسّن، وقائمة بيضاء للنطاقات الخارجية.</div></div></div>
+    <div class="roadmap-item"><div class="roadmap-dot done">✓</div><div class="roadmap-content"><div class="roadmap-title"><span class="badge-done">مكتمل</span>نظام المرتجعات + الديون المتكاملة</div><div class="roadmap-desc">تتبع المرتجعات، المبلغ المسترد التلقائي، وتعديل الديون.</div></div></div>
+    <div class="roadmap-item"><div class="roadmap-dot done">✓</div><div class="roadmap-content"><div class="roadmap-title"><span class="badge-done">مكتمل</span>دعم كامل لـ Android و Linux</div><div class="roadmap-desc">تطبيق واحد يعمل بكفاءة على الهواتف والحواسيب.</div></div></div>
+    <div class="roadmap-item"><div class="roadmap-dot wip">⟳</div><div class="roadmap-content"><div class="roadmap-title"><span class="badge-wip">جارٍ العمل</span>المزامنة عبر الشبكة المحلية</div><div class="roadmap-desc">مزامنة البيانات بين أجهزة متعددة في نفس المتجر دون إنترنت.</div></div></div>
+    <div class="roadmap-item"><div class="roadmap-dot todo">○</div><div class="roadmap-content"><div class="roadmap-title"><span class="badge-soon">قريباً</span>فواتير وديون الموردين + نسخة Windows</div><div class="roadmap-desc">تسجيل فواتير الشراء وديون الموردين، وإصدار exe لنظام Windows.</div></div></div>
   </div>
 </section>
 
@@ -407,28 +392,30 @@
   <div class="tech-grid">
     <div class="tech-chip">React 18</div><div class="tech-chip">TypeScript</div><div class="tech-chip">Vite 5</div>
     <div class="tech-chip">Tailwind CSS</div><div class="tech-chip">Electron 28</div><div class="tech-chip">Capacitor 6</div>
-    <div class="tech-chip">Recharts</div><div class="tech-chip">html5-qrcode</div><div class="tech-chip">jsqr</div>
-    <div class="tech-chip">html2canvas</div><div class="tech-chip">qrcode.react</div><div class="tech-chip">GPL v3.0</div>
+    <div class="tech-chip">jsQR (Scanner)</div><div class="tech-chip">html2canvas</div><div class="tech-chip">qrcode.react</div>
+    <div class="tech-chip">Recharts</div><div class="tech-chip">GPL v3.0</div>
   </div>
 </section>
 
-<!-- DOWNLOAD CTA -->
-<section class="download-section">
+<!-- DOWNLOAD CTA v2.9.4 -->
+<section id="download" class="download-section">
   <div class="section-tag" style="background:rgba(255,255,255,.15);color:#fff">التحميل</div>
   <h2>ابدأ اليوم مجاناً</h2>
   <p class="section-desc">متجري مجاني ومفتوح المصدر — متوفر على GNU/Linux وAndroid.</p>
   <div class="download-cards">
-    <a href="https://github.com/SalehGNUTUX/matjari/releases/download/Matjari-2.9.3-beta/Matjari-2.9.3-beta.apk" class="download-card">
+    <a href="https://github.com/SalehGNUTUX/matjari/releases/download/matjari-2.9.4-beta/matjari-2.9.4.apk" class="download-card">
       <div class="download-card-icon">📱</div>
       <div class="download-card-title">Android APK</div>
-      <div class="download-card-size">v2.9.3 Beta</div>
-      <div class="download-card-platform">Android 7.0+ · matjari-2.9.3.apk</div>
+      <div class="download-card-size">v2.9.4 Beta</div>
+      <div class="download-card-platform">Android 7.0+</div>
+      <div class="checksum">SHA-256: df0d8d7da872...</div>
     </a>
-    <a href="https://github.com/SalehGNUTUX/matjari/releases/download/Matjari-2.9.3-beta/Matjari-2.9.3-x86_64.AppImage" class="download-card">
+    <a href="https://github.com/SalehGNUTUX/matjari/releases/download/matjari-2.9.4-beta/Matjari-2.9.4-x86_64.AppImage" class="download-card">
       <div class="download-card-icon">🐧</div>
       <div class="download-card-title">Linux AppImage</div>
-      <div class="download-card-size">v2.9.3 Beta</div>
+      <div class="download-card-size">v2.9.4 Beta</div>
       <div class="download-card-platform">x86_64 — كل توزيعات GNU/Linux</div>
+      <div class="checksum">SHA-256: a278e2905e10...</div>
     </a>
     <a href="https://github.com/SalehGNUTUX/matjari" class="download-card">
       <div class="download-card-icon">⭐</div>
@@ -437,6 +424,13 @@
       <div class="download-card-platform">ساهم في التطوير</div>
     </a>
   </div>
+  <details style="margin-top:20px;color:rgba(255,255,255,0.8);font-size:12px">
+    <summary>🔐 التحقق من SHA-256</summary>
+    <pre style="direction:ltr;text-align:left;background:rgba(0,0,0,0.2);padding:8px;border-radius:12px;margin-top:8px">
+matjari-2.9.4.apk: df0d8d7da872294f39f79eaaa457229173fd0bb5aa9eaf6171ed5b4d3cb9f943
+Matjari-2.9.4-x86_64.AppImage: a278e2905e1085153645ffa0a035199558244baa16b71f5a1ac5cb095add2aea
+    </pre>
+  </details>
 </section>
 
 <!-- FOOTER -->
@@ -450,7 +444,7 @@
       <a href="https://github.com/SalehGNUTUX/matjari/issues" target="_blank" rel="noopener" class="footer-link">الإبلاغ عن مشكلة</a>
       <a href="https://github.com/SalehGNUTUX/matjari/blob/main/LICENSE" target="_blank" rel="noopener" class="footer-link">الترخيص GPL v3</a>
     </div>
-    <div class="footer-copy">صُنع بـ ❤️ بواسطة SalehGNUTUX — 2026</div>
+    <div class="footer-copy">صُنع بـ ❤️ بواسطة SalehGNUTUX — 2026 · الإصدار 2.9.4 Beta مع الماسح التلقائي</div>
   </div>
 </footer>
 
