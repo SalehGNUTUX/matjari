@@ -1,0 +1,22 @@
+{
+  "appId": "com.matjari.pos",
+  "appName": "Matjari",
+  "webDir": "dist",
+  "server": {
+    "androidScheme": "https",
+    "allowNavigation": [
+      "world.openfoodfacts.org",
+      "world.openbeautyfacts.org",
+      "world.openproductsfacts.org",
+      "world.openpetfoodfacts.org",
+      "api.allorigins.win",
+      "go-upc.com"
+    ]
+  },
+  "plugins": {
+    "SplashScreen": {
+      "launchShowDuration": 1500,
+      "backgroundColor": "#0a0f1a"
+    }
+  }
+}
